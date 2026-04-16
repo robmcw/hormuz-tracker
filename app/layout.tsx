@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: [
-    { path: "./fonts/geist-latin.woff2", weight: "100 900", style: "normal" },
-    { path: "./fonts/geist-latin-ext.woff2", weight: "100 900", style: "normal" },
-  ],
-  variable: "--font-geist-sans",
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 const geistMono = localFont({
@@ -15,12 +14,12 @@ const geistMono = localFont({
     { path: "./fonts/geist-mono-latin.woff2", weight: "100 900", style: "normal" },
     { path: "./fonts/geist-mono-latin-ext.woff2", weight: "100 900", style: "normal" },
   ],
-  variable: "--font-geist-mono",
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
-  title: "Hormuz",
-  description: "Live vessel positions — Strait of Hormuz",
+  title: "Hormuz Intelligence",
+  description: "Strait of Hormuz risk monitor",
 };
 
 export default function RootLayout({
@@ -29,11 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="h-full overflow-hidden">{children}</body>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} antialiased`}>
+      <body style={{ background: '#08111e', color: '#ddeaf5' }} suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

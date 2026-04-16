@@ -1,8 +1,45 @@
 @import "tailwindcss";
 
-html,
-body {
-  height: 100%;
+:root {
+  --bg:      #08111e;
+  --surface: #0e1c2e;
+  --text:    #ddeaf5;
+  --muted:   rgba(221,234,245,0.58);
+  --faint:   rgba(221,234,245,0.34);
+  --border:  rgba(255,255,255,0.08);
+
+  --red-text:   #fca5a5;
+  --amber-text: #fcd34d;
+  --green-text: #86efac;
+}
+
+html, body {
   margin: 0;
   padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Section label with extending rule line */
+.sec-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(221,234,245,0.62);
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
