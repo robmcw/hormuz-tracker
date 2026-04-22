@@ -10,35 +10,40 @@ interface Props {
 }
 
 const ANNOTATIONS: { date: string; label: string; color: string }[] = [
-  { date: '2026-02-28', label: 'Crisis onset',        color: '#fcd34d' },
-  { date: '2026-04-08', label: 'Ceasefire (partial)', color: '#86efac' },
-  { date: '2026-04-13', label: 'Collapse',            color: '#fca5a5' },
+  { date: '2026-02-28', label: 'Crisis onset',        color: 'var(--warning-text)' },
+  { date: '2026-04-08', label: 'Ceasefire (partial)', color: 'var(--improving-text)' },
+  { date: '2026-04-13', label: 'Collapse',            color: 'var(--critical-text)' },
 ];
 
-const LINE_COLOR = '#f59e0b';
+const LINE_COLOR = 'var(--warning)';
 
 export default function TransitChart({ history }: Props) {
   if (history.length < 2) {
     return (
-      <div className="font-mono text-[10px] animate-pulse" style={{ color: 'rgba(221,234,245,0.34)' }}>
+      <div
+        className="font-mono animate-pulse"
+        style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
+      >
         Loading chart…
       </div>
     );
   }
 
+  // ─── Geometry ────────────────────────────────────────────────────────────
   const W = 800;
-  const H = 72;
-  const PL = 6;
-  const PR = 6;
-  const PT = 16;
-  const PB = 16;
+  const H = 180;
+  const PL = 8;
+  const PR = 8;
+  const PT = 28;   // top padding — room for annotation labels above chart
+  const PB = 24;   // bottom padding — room for month labels
 
-  const dates  = history.map(p => p.date);
   const values = history.map(p => p.value);
-  const maxV   = 125;
+  const dates  = history.map(p => p.date);
+  const maxV   = 130;
 
   const cx = (i: number) => PL + (i / (values.length - 1)) * (W - PL - PR);
   const cy = (v: number) => PT + (1 - v / maxV) * (H - PT - PB);
+  const asPct = (x: number) => (x / W) * 100;
 
   const baseline = cy(110);
 
@@ -48,80 +53,168 @@ export default function TransitChart({ history }: Props) {
 
   const areaPath = `${linePath} L${cx(values.length - 1).toFixed(1)},${cy(0).toFixed(1)} L${cx(0).toFixed(1)},${cy(0).toFixed(1)} Z`;
 
-  const monthTicks: { x: number; label: string }[] = [];
+  // ─── Month ticks ────────────────────────────────────────────────────────
+  const monthTicks: { leftPct: number; label: string }[] = [];
   let lastMonth = '';
   history.forEach((p, i) => {
     const m = p.date.slice(0, 7);
     if (m !== lastMonth) {
       lastMonth = m;
       monthTicks.push({
-        x: cx(i),
-        label: new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' }),
+        leftPct: asPct(cx(i)),
+        label: new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-GB', {
+          month: 'short', timeZone: 'UTC',
+        }),
       });
     }
   });
 
-  const annotationLines = ANNOTATIONS.map(ann => {
-    const idx = dates.indexOf(ann.date);
-    if (idx === -1) return null;
-    return { ...ann, x: cx(idx), y: cy(values[idx]) };
-  }).filter(Boolean) as ({ date: string; label: string; color: string; x: number; y: number })[];
+  // ─── Annotations with overlap-avoidance ─────────────────────────────────
+  // Greedy packing: if a label would collide with one already placed in row 0,
+  // push it to row 1, and so on. Keeps nearby labels stacked instead of overlapping.
+  const APPROX_LABEL_PCT = 13;   // est. label width as % of chart width
+  interface PlacedAnnotation {
+    date: string;
+    label: string;
+    color: string;
+    xPct: number;
+    row: number;
+  }
+  const rowRightEdge: number[] = [];
+  const placed: PlacedAnnotation[] = [];
+
+  ANNOTATIONS
+    .map(ann => {
+      const idx = dates.indexOf(ann.date);
+      return idx === -1 ? null : { ann, idx };
+    })
+    .filter(<T,>(v: T | null): v is T => v !== null)
+    .sort((a, b) => a.idx - b.idx)
+    .forEach(({ ann, idx }) => {
+      const xPct = asPct(cx(idx));
+      let row = 0;
+      while (rowRightEdge[row] !== undefined && rowRightEdge[row] > xPct) row++;
+      rowRightEdge[row] = xPct + APPROX_LABEL_PCT;
+      placed.push({ ...ann, xPct, row });
+    });
+
+  // Y-axis ticks (drawn inside SVG; small text here is a judgement call, but
+  // at the left margin with tiny values the distortion is minor)
+  const yTicks = [0, 55, 110];
 
   return (
-    <div>
+    <div className="relative w-full" style={{ height: H }}>
+      {/* ── Shapes layer (stretched to fit width) ─────────────────────── */}
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full"
-        style={{ height: H }}
+        className="absolute inset-0 w-full h-full"
         preserveAspectRatio="none"
       >
-        {/* Baseline */}
+        {/* Horizontal grid */}
+        {yTicks.map(v => (
+          <line
+            key={v}
+            x1={PL} y1={cy(v)} x2={W - PR} y2={cy(v)}
+            stroke="rgba(255,255,255,0.05)" strokeWidth="0.6"
+            vectorEffect="non-scaling-stroke"
+          />
+        ))}
+
+        {/* Baseline emphasis */}
         <line
           x1={PL} y1={baseline} x2={W - PR} y2={baseline}
-          stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"
+          stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeDasharray="4,3"
+          vectorEffect="non-scaling-stroke"
         />
 
+        {/* Annotation verticals */}
+        {placed.map(ann => {
+          const x = (ann.xPct / 100) * W;
+          return (
+            <line
+              key={ann.date}
+              x1={x} y1={PT - 6} x2={x} y2={H - PB}
+              stroke={ann.color} strokeWidth="1" strokeDasharray="3,2" opacity="0.55"
+              vectorEffect="non-scaling-stroke"
+            />
+          );
+        })}
+
         {/* Area fill */}
-        <path d={areaPath} fill={`${LINE_COLOR}18`} />
+        <path d={areaPath} fill={LINE_COLOR} fillOpacity="0.12" />
 
         {/* Line */}
         <path
           d={linePath} fill="none"
-          stroke={LINE_COLOR} strokeWidth="1.5"
+          stroke={LINE_COLOR} strokeWidth="1.8"
           strokeLinejoin="round" strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
         />
 
-        {/* Annotation lines */}
-        {annotationLines.map(ann => (
-          <line
-            key={ann.date}
-            x1={ann.x} y1={PT - 2} x2={ann.x} y2={H - PB}
-            stroke={ann.color} strokeWidth="0.8" strokeDasharray="3,2" opacity="0.5"
-          />
-        ))}
-
-        {/* Month labels */}
-        {monthTicks.map((t, i) => (
-          <text key={i} x={t.x} y={H - 2} fill="rgba(221,234,245,0.28)" fontSize="7.5" textAnchor="middle">
-            {t.label}
-          </text>
-        ))}
-
         {/* End dot */}
-        <circle cx={cx(values.length - 1)} cy={cy(values[values.length - 1])} r="2.5" fill={LINE_COLOR} />
+        <circle
+          cx={cx(values.length - 1)}
+          cy={cy(values[values.length - 1])}
+          r="3"
+          fill={LINE_COLOR}
+          vectorEffect="non-scaling-stroke"
+        />
       </svg>
 
-      {/* Legend */}
-      <div className="flex gap-4 mt-2 flex-wrap">
-        {annotationLines.map(ann => (
-          <div key={ann.date} className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: ann.color }} />
-            <span className="font-mono text-[9px]" style={{ color: 'rgba(221,234,245,0.34)' }}>
-              {ann.date.slice(5).replace('-', '/')} {ann.label}
-            </span>
-          </div>
-        ))}
-      </div>
+      {/* ── Y-axis value labels (HTML, left margin) ───────────────────── */}
+      {yTicks.map(v => (
+        <span
+          key={v}
+          className="font-mono absolute pointer-events-none"
+          style={{
+            top: `${(cy(v) / H) * 100}%`,
+            left: 4,
+            transform: 'translateY(-100%)',
+            fontSize: 9,
+            color: 'rgba(221,234,245,0.32)',
+            lineHeight: 1,
+          }}
+        >
+          {v}
+        </span>
+      ))}
+
+      {/* ── Annotation labels (HTML, stacked if close) ────────────────── */}
+      {placed.map(ann => (
+        <span
+          key={ann.date}
+          className="font-mono absolute pointer-events-none whitespace-nowrap"
+          style={{
+            top: ann.row * 13 + 2,
+            left: `${ann.xPct}%`,
+            transform: 'translateX(4px)',
+            fontSize: 10,
+            color: ann.color,
+            lineHeight: 1.2,
+            opacity: 0.92,
+          }}
+        >
+          {ann.label}
+        </span>
+      ))}
+
+      {/* ── Month labels (HTML, bottom) ───────────────────────────────── */}
+      {monthTicks.map((t, i) => (
+        <span
+          key={i}
+          className="font-mono absolute pointer-events-none"
+          style={{
+            bottom: 2,
+            left: `${t.leftPct}%`,
+            transform: 'translateX(-50%)',
+            fontSize: 9,
+            letterSpacing: '0.08em',
+            color: 'rgba(221,234,245,0.38)',
+          }}
+        >
+          {t.label.toUpperCase()}
+        </span>
+      ))}
     </div>
   );
 }

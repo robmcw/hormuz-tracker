@@ -14,96 +14,138 @@ interface Props {
   signals: Signal[];
 }
 
-function topBorderColor(severity: number): string {
-  if (severity >= 90) return '#ef4444';
-  if (severity >= 70) return '#f59e0b';
-  return 'rgba(221,234,245,0.2)';
+type Tone = 'critical' | 'warning' | 'stable';
+
+function severityTone(s: number): Tone {
+  if (s >= 85) return 'critical';
+  if (s >= 65) return 'warning';
+  return 'stable';
 }
 
-function barColor(severity: number): string {
-  if (severity >= 90) return '#ef4444';
-  if (severity >= 70) return '#f59e0b';
-  return '#22c55e';
-}
-
-const VALUE_COLOR: Record<string, string> = {
-  WORSENING: '#fca5a5',
-  STABLE:    '#fcd34d',
-  IMPROVING: '#86efac',
+const TONE_ACCENT: Record<Tone, string> = {
+  critical: 'var(--critical)',
+  warning:  'var(--warning)',
+  stable:   'var(--stable)',
 };
 
-const DIR_LABEL: Record<string, string> = {
-  WORSENING: '↑ worsening',
-  STABLE:    '→ stable',
-  IMPROVING: '↓ improving',
+const DIR_META: Record<Signal['direction'], { label: string; color: string }> = {
+  WORSENING: { label: '↑ worsening', color: 'var(--critical-text)' },
+  STABLE:    { label: '→ stable',    color: 'var(--faint)'         },
+  IMPROVING: { label: '↓ improving', color: 'var(--improving-text)'},
 };
 
-const DIR_COLOR: Record<string, string> = {
-  WORSENING: '#fca5a5',
-  STABLE:    'rgba(221,234,245,0.34)',
-  IMPROVING: '#86efac',
+const VALUE_TONE: Record<Signal['direction'], string> = {
+  WORSENING: 'var(--critical-text)',
+  STABLE:    'var(--warning-text)',
+  IMPROVING: 'var(--improving-text)',
 };
 
 export default function SignalBreakdown({ signals }: Props) {
   if (!signals.length) {
     return (
-      <div className="font-mono text-[10px] animate-pulse" style={{ color: 'rgba(221,234,245,0.34)' }}>
+      <div
+        className="font-mono animate-pulse"
+        style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
+      >
         Loading signals…
       </div>
     );
   }
 
   return (
-    <div className="grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-      {signals.map(s => (
-        <div
-          key={s.id}
-          style={{
-            background: '#0e1c2e',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 8,
-            padding: '18px 20px',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Coloured top accent */}
+    <div
+      className="grid"
+      style={{
+        gridTemplateColumns: `repeat(${Math.min(signals.length, 3)}, 1fr)`,
+        gap: 16,
+      }}
+    >
+      {signals.map(s => {
+        const tone = severityTone(s.severity);
+        return (
           <div
+            key={s.id}
             style={{
-              position: 'absolute',
-              top: 0, left: 0, right: 0,
-              height: 2,
-              background: topBorderColor(s.severity),
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 8,
+              padding: '22px 24px 20px',
+              position: 'relative',
+              overflow: 'hidden',
             }}
-          />
-
-          <div className="text-[12px] font-medium mb-3" style={{ color: 'rgba(221,234,245,0.58)' }}>
-            {s.label}
-          </div>
-
-          <div className="font-mono text-[16px] font-medium mb-3" style={{ color: VALUE_COLOR[s.direction] }}>
-            {s.value}
-          </div>
-
-          <div
-            className="mb-2.5"
-            style={{ height: 3, background: 'rgba(255,255,255,0.07)', borderRadius: 3, overflow: 'hidden' }}
           >
             <div
               style={{
-                width: `${s.severity}%`,
-                height: '100%',
-                background: barColor(s.severity),
-                borderRadius: 3,
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                height: 2,
+                background: TONE_ACCENT[tone],
               }}
             />
-          </div>
 
-          <div className="font-mono text-[10px]" style={{ color: DIR_COLOR[s.direction] }}>
-            {DIR_LABEL[s.direction]}
+            <div
+              className="mb-3"
+              style={{ fontSize: 'var(--text-secondary)', color: 'var(--muted)' }}
+            >
+              {s.label}
+            </div>
+
+            <div
+              className="font-mono font-medium mb-4"
+              style={{
+                fontSize: 'var(--text-hero)',
+                lineHeight: 1.25,
+                color: VALUE_TONE[s.direction],
+              }}
+            >
+              {s.value}
+            </div>
+
+            <div
+              className="mb-3"
+              style={{
+                height: 3,
+                background: 'rgba(255,255,255,0.07)',
+                borderRadius: 3,
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  width: `${s.severity}%`,
+                  height: '100%',
+                  background: TONE_ACCENT[tone],
+                  borderRadius: 3,
+                }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between mb-2">
+              <span
+                className="font-mono"
+                style={{ fontSize: 'var(--text-label)', color: DIR_META[s.direction].color }}
+              >
+                {DIR_META[s.direction].label}
+              </span>
+              {s.baseline && (
+                <span
+                  className="font-mono"
+                  style={{ fontSize: 'var(--text-label)', color: 'var(--ghost)' }}
+                >
+                  baseline {s.baseline}
+                </span>
+              )}
+            </div>
+
+            <p
+              className="leading-relaxed"
+              style={{ fontSize: 'var(--text-secondary)', color: 'var(--faint)' }}
+            >
+              {s.summary}
+            </p>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

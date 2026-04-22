@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 interface StructuredAnalysis {
+  intro: string;            // 2–3 sentence situation summary for the top of the page
   direction: string;        // e.g. "WORSENING"
   directionText: string;    // 1–2 sentences
   primaryDriver: string;    // 1–2 sentences
@@ -33,7 +34,7 @@ function currentInputSnapshot() {
     freightBaseline_k: 28,
     carriersSuspended: 'Maersk, MSC, Hapag-Lloyd, CMA CGM',
     carriersLimited:   'COSCO (limited, under escort); ADNOC (active, sovereign status)',
-    incidents:         'ELPIS (crew detained Apr 13, ceasefire collapse); SKYLIGHT (VLCC missile strike Apr 10, CTL); MKD VYOM (drone hit Apr 8)',
+    incidents:         'MSC Francesca and Epaminondas seized by IRGC Navy Apr 22, directed to Iranian coast; Euphoria targeted by IRGC Apr 22, grounded off Iranian coast; Elpis (sanctioned Iranian shadow fleet tanker) transited in defiance of US naval blockade Apr 14; Skylight (VLCC) missile strike Apr 10, constructive total loss; MKD Vyom (LR2) drone strike Apr 8, diverted to Fujairah',
     bypassStatus:      'East-West Pipeline 62%; Habshan–Fujairah 38%; Kirkuk–Ceyhan 22%',
   };
 }
@@ -44,6 +45,7 @@ function parseStructured(raw: string): StructuredAnalysis {
     return match ? match[1].trim() : '';
   };
   return {
+    intro:           get('INTRO'),
     direction:       get('DIRECTION'),
     directionText:   get('DIRECTION_TEXT'),
     primaryDriver:   get('PRIMARY_DRIVER'),
@@ -75,6 +77,7 @@ export async function GET() {
 
   const prompt = `You are a maritime risk analyst. Respond ONLY in this exact format — no other text, no markdown:
 
+INTRO: [3–4 sentences for the top of a professional maritime intelligence briefing. Lead with the single most significant recent development from the incident data. Integrate current transit levels and freight market conditions. Write for a senior shipping or energy professional. Wrap 4–6 of the most scannable facts (vessel names, numbers, percentages, status changes, key dates) in double asterisks like **this** for visual emphasis. Do not use any other formatting.]
 DIRECTION: [one word: WORSENING, STABLE, or IMPROVING]
 DIRECTION_TEXT: [1–2 plain sentences on overall risk trajectory]
 PRIMARY_DRIVER: [1–2 plain sentences naming the single dominant risk factor]
@@ -97,7 +100,7 @@ Use professional shipping and insurance terminology. No markdown. No bold. No ex
     const client = new Anthropic({ apiKey });
     const message = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 400,
+      max_tokens: 600,
       messages: [{ role: 'user', content: prompt }],
     });
 

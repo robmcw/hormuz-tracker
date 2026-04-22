@@ -1,16 +1,49 @@
 @import "tailwindcss";
 
 :root {
+  /* ── Surface ─────────────────────────────────────── */
   --bg:      #08111e;
   --surface: #0e1c2e;
+  --border:  rgba(255,255,255,0.08);
+
+  /* ── Text ────────────────────────────────────────── */
   --text:    #ddeaf5;
   --muted:   rgba(221,234,245,0.58);
   --faint:   rgba(221,234,245,0.34);
-  --border:  rgba(255,255,255,0.08);
+  --ghost:   rgba(221,234,245,0.18);
 
-  --red-text:   #fca5a5;
-  --amber-text: #fcd34d;
-  --green-text: #86efac;
+  /* ── Semantic colour tokens ──────────────────────── */
+  /* Usage: solid for accents/bars, text for legible text, bg for tints, border for outlines */
+  --critical:        #ef4444;
+  --critical-text:   #fca5a5;
+  --critical-bg:     rgba(239,68,68,0.12);
+  --critical-border: rgba(239,68,68,0.45);
+
+  --warning:         #f59e0b;
+  --warning-text:    #fcd34d;
+  --warning-bg:      rgba(245,158,11,0.10);
+  --warning-border:  rgba(245,158,11,0.40);
+
+  --improving:       #22c55e;
+  --improving-text:  #86efac;
+  --improving-bg:    rgba(34,197,94,0.10);
+  --improving-border:rgba(34,197,94,0.40);
+
+  --stable:          #6b7280;
+  --stable-text:     rgba(221,234,245,0.58);
+
+  /* ── Legacy aliases (do not use in new code) ─────── */
+  --red-text:   var(--critical-text);
+  --amber-text: var(--warning-text);
+  --green-text: var(--improving-text);
+
+  /* ── Type scale ──────────────────────────────────── */
+  /* Only four sizes. Add intermediates only with good reason. */
+  --text-display:   30px;
+  --text-hero:      20px;
+  --text-body:      14px;
+  --text-secondary: 12px;
+  --text-label:     10px;
 }
 
 html, body {
@@ -19,7 +52,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 14px;
+  font-size: var(--text-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -30,10 +63,11 @@ html, body {
   align-items: center;
   gap: 14px;
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.13em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(221,234,245,0.62);
+  color: rgba(221,234,245,0.92);
   margin-bottom: 20px;
   white-space: nowrap;
 }
@@ -42,4 +76,13 @@ html, body {
   flex: 1;
   height: 1px;
   background: var(--border);
+}
+
+/* Subtle live-data pulse for hero / breaking indicator */
+@keyframes breathing-glow {
+  0%,   100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.0); }
+  50%        { box-shadow: 0 0 0 3px rgba(239,68,68,0.15); }
+}
+.breathing {
+  animation: breathing-glow 2.8s ease-in-out infinite;
 }

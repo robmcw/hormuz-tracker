@@ -1,6 +1,7 @@
 'use client';
 
 interface StructuredAnalysis {
+  intro: string;
   direction: string;
   directionText: string;
   primaryDriver: string;
@@ -17,94 +18,127 @@ interface Props {
   } | null;
 }
 
-const BORDER = 'rgba(255,255,255,0.08)';
-const SURFACE = '#0e1c2e';
-const MUTED = 'rgba(221,234,245,0.58)';
-const FAINT = 'rgba(221,234,245,0.34)';
-
 function utcTime(iso: string) {
-  return new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC';
+  return new Date(iso).toLocaleTimeString('en-GB', {
+    hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+  }) + ' UTC';
 }
 
-interface ColProps {
+function timeAgo(iso: string): string {
+  const m = Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+interface TileProps {
   label: string;
   text: string;
-  accentColor: string;
-  labelColor: string;
-  last?: boolean;
+  accent: string;
+  loading?: boolean;
 }
 
-function Col({ label, text, accentColor, labelColor, last }: ColProps) {
+function Tile({ label, text, accent, loading }: TileProps) {
   return (
     <div
       style={{
-        borderTop: `2px solid ${accentColor}`,
-        borderRight: last ? 'none' : `0.5px solid ${BORDER}`,
-        padding: '20px 28px 24px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
+        borderLeft: `2px solid ${accent}`,
+        padding: '6px 0 6px 18px',
       }}
     >
       <div
-        className="font-mono text-[9px] tracking-[0.12em] uppercase"
-        style={{ color: labelColor }}
+        className="font-mono uppercase mb-2"
+        style={{
+          fontSize: 'var(--text-label)',
+          letterSpacing: '0.12em',
+          color: accent,
+        }}
       >
         {label}
       </div>
-      <div className="text-[12.5px] leading-[1.7]" style={{ color: MUTED }}>
-        {text}
-      </div>
+      {loading ? (
+        <div className="space-y-1.5 animate-pulse">
+          <div style={{ height: 12, width: '92%', background: 'rgba(221,234,245,0.07)', borderRadius: 3 }} />
+          <div style={{ height: 12, width: '74%', background: 'rgba(221,234,245,0.07)', borderRadius: 3 }} />
+        </div>
+      ) : (
+        <p
+          className="leading-relaxed"
+          style={{ fontSize: 'var(--text-body)', color: 'var(--muted)' }}
+        >
+          {text}
+        </p>
+      )}
     </div>
   );
 }
 
-const PLACEHOLDER = 'Loading assessment…';
-
 export default function AIAssessment({ analysis }: Props) {
   const s = analysis?.structured ?? null;
+  const loading = !s;
 
   return (
-    <div style={{ background: SURFACE, borderBottom: `0.5px solid ${BORDER}` }}>
-      {/* Header row */}
+    <div style={{ background: 'var(--surface)', borderBottom: '0.5px solid var(--border)' }}>
+      {/* Header */}
       <div
         className="flex items-center justify-between"
-        style={{ padding: '20px 32px 18px', borderBottom: `0.5px solid ${BORDER}` }}
+        style={{ padding: '18px 32px', borderBottom: '0.5px solid var(--border)' }}
       >
-        <div className="font-mono text-[10px] tracking-[0.13em] uppercase" style={{ color: 'rgba(221,234,245,0.62)' }}>
+        <div
+          className="font-mono uppercase"
+          style={{
+            fontSize: 'var(--text-label)',
+            letterSpacing: '0.13em',
+            color: 'var(--muted)',
+          }}
+        >
           AI Risk Assessment · Claude
         </div>
-        <div className="font-mono text-[10px]" style={{ color: FAINT }}>
-          {analysis?.generatedAt ? `Generated ${utcTime(analysis.generatedAt)} · refreshes hourly` : 'Loading…'}
+        <div
+          className="font-mono"
+          style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
+        >
+          {analysis?.generatedAt
+            ? `${timeAgo(analysis.generatedAt)} · ${utcTime(analysis.generatedAt)} · refreshes hourly${analysis.cached ? ' · cached' : ''}`
+            : 'Loading…'}
         </div>
       </div>
 
-      {/* 4-column strip */}
-      <div className="grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        <Col
+      {/* 2 × 2 grid */}
+      <div
+        className="grid"
+        style={{
+          gridTemplateColumns: '1fr 1fr',
+          columnGap: 48,
+          rowGap: 28,
+          padding: '28px 32px 32px',
+        }}
+      >
+        <Tile
           label="Risk direction"
-          text={s?.directionText ?? PLACEHOLDER}
-          accentColor="var(--red-text)"
-          labelColor="var(--red-text)"
+          text={s?.directionText ?? ''}
+          accent="var(--critical-text)"
+          loading={loading}
         />
-        <Col
+        <Tile
           label="Primary driver"
-          text={s?.primaryDriver ?? PLACEHOLDER}
-          accentColor="var(--amber-text)"
-          labelColor="var(--amber-text)"
+          text={s?.primaryDriver ?? ''}
+          accent="var(--warning-text)"
+          loading={loading}
         />
-        <Col
+        <Tile
           label="Contrarian signal"
-          text={s?.contrarian ?? PLACEHOLDER}
-          accentColor="var(--green-text)"
-          labelColor="var(--green-text)"
+          text={s?.contrarian ?? ''}
+          accent="var(--improving-text)"
+          loading={loading}
         />
-        <Col
+        <Tile
           label="What would change this"
-          text={s?.changeCondition ?? PLACEHOLDER}
-          accentColor="rgba(221,234,245,0.2)"
-          labelColor={FAINT}
-          last
+          text={s?.changeCondition ?? ''}
+          accent="var(--ghost)"
+          loading={loading}
         />
       </div>
     </div>
