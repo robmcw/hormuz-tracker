@@ -89,9 +89,10 @@ export default function AIAssessment({ analysis }: Props) {
         <div
           className="font-mono uppercase"
           style={{
-            fontSize: 'var(--text-label)',
-            letterSpacing: '0.13em',
-            color: 'var(--muted)',
+            fontSize: 12,
+            fontWeight: 600,
+            letterSpacing: '0.14em',
+            color: 'var(--text)',
           }}
         >
           AI Risk Assessment · Claude

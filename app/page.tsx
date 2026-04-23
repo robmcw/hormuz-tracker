@@ -7,6 +7,8 @@ import SignalBreakdown from '@/components/SignalBreakdown';
 import TransitChart from '@/components/TransitChart';
 import IncidentLog from '@/components/IncidentLog';
 import CarrierStatus from '@/components/CarrierStatus';
+import UnderwriterContext from '@/components/UnderwriterContext';
+import CommissionModal from '@/components/CommissionModal';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -187,6 +189,9 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
 
+      {/* ── Commission modal (scroll-triggered) ────────────────────────── */}
+      <CommissionModal />
+
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <header
         className="sticky top-0 z-50 flex items-center justify-between px-8 h-[52px]"
@@ -279,6 +284,9 @@ export default function Home() {
         brentPct={oil?.brent.changePercent ?? null}
         freightRate={signals?.keyFigures.freightRate ?? null}
       />
+
+      {/* ── Underwriter context (rate history + JWC + portfolio) ───────── */}
+      <UnderwriterContext />
 
       {/* ── Incident log (hero + chronological) ─────────────────────────── */}
       <IncidentLog incidents={signals?.incidents ?? []} />
