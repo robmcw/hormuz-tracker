@@ -102,7 +102,7 @@ export default function AIAssessment({ analysis }: Props) {
           style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
         >
           {analysis?.generatedAt
-            ? `${timeAgo(analysis.generatedAt)} · ${utcTime(analysis.generatedAt)} · refreshes hourly${analysis.cached ? ' · cached' : ''}`
+            ? `Assessed ${utcTime(analysis.generatedAt)} · ${timeAgo(analysis.generatedAt)}`
             : 'Loading…'}
         </div>
       </div>

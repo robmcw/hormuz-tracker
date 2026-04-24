@@ -125,10 +125,10 @@ export default function CommissionModal() {
             letterSpacing: '-0.01em',
           }}
         >
-          This dashboard was built in 10 days, using public data.
+          This prototype was built in a single sprint, by one developer, using only public data.
           <br />
           <span style={{ color: 'var(--warning-text)' }}>
-            What could we build in 10 days with yours?
+            In two weeks, with yours, we&apos;d ship something your team could actually use on Monday.
           </span>
         </h2>
 
@@ -140,9 +140,10 @@ export default function CommissionModal() {
             marginBottom: 28,
           }}
         >
-          Custom underwriter co-pilots. Internal intel dashboards. Client-facing risk products.
-          Broker-facing submission triage. Shipped in one to two weeks, not two quarters.
-          You bring the workflow your team hates. We return a working tool.
+          The 2-week accelerator is what this <em style={{ fontStyle: 'italic', color: 'var(--text)' }}>isn&apos;t</em>:
+          your data plumbed in, your users in the room while we iterate, and production handoff to your team.
+          Custom underwriter co-pilots. Internal intel dashboards. Broker-facing submission triage.
+          One sharp workflow, shipped.
         </p>
 
         <div className="flex flex-wrap items-center gap-3 mb-5">

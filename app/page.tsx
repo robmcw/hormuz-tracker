@@ -142,7 +142,7 @@ export default function Home() {
     const [oilRes, sigRes, anaRes, newsRes] = await Promise.allSettled([
       fetch('/api/oil-price'),
       fetch('/api/signals'),
-      fetch('/api/analysis'),
+      fetch('/analysis.json', { cache: 'no-store' }),
       fetch('/api/news'),
     ]);
 
@@ -245,7 +245,7 @@ export default function Home() {
       <section className="px-8 py-10" style={{ borderBottom: BORDER }}>
         <div className="flex items-baseline justify-between mb-5">
           <div className="sec-label" style={{ marginBottom: 0 }}>
-            Hourly briefing
+            Situation briefing
           </div>
           {analysis?.generatedAt && (
             <span

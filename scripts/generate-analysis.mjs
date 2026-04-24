@@ -1,29 +1,27 @@
+#!/usr/bin/env node
+/**
+ * Generates the maritime briefing via Claude and writes it to
+ * public/analysis.json. Runs as a prebuild step so every deploy
+ * ships a fresh briefing; locally, run `npm run generate:analysis`.
+ *
+ * If ANTHROPIC_API_KEY is not set, the script exits 0 without
+ * modifying the existing JSON — the committed file is used as fallback.
+ */
+
 import Anthropic from '@anthropic-ai/sdk';
+import { writeFileSync, mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-
-interface StructuredAnalysis {
-  intro: string;            // 2–3 sentence situation summary for the top of the page
-  direction: string;        // e.g. "WORSENING"
-  directionText: string;    // 1–2 sentences
-  primaryDriver: string;    // 1–2 sentences
-  contrarian: string;       // 1 sentence
-  changeCondition: string;  // 1 sentence
-}
-
-interface CacheEntry {
-  structured: StructuredAnalysis;
-  inputs: object;
-  timestamp: number;
-}
-
-let cache: CacheEntry | null = null;
-const CACHE_TTL_MS = 60 * 60 * 1000;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const OUTPUT = join(__dirname, '..', 'public', 'analysis.json');
 
 function currentInputSnapshot() {
   const hourSeed = Math.floor(Date.now() / 3_600_000);
-  const rng = (s: number) => { const x = Math.sin(hourSeed * 100 + s) * 10000; return x - Math.floor(x); };
+  const rng = (s) => {
+    const x = Math.sin(hourSeed * 100 + s) * 10000;
+    return x - Math.floor(x);
+  };
 
   return {
     transitCount:      5 + Math.round(rng(1) * 4),
@@ -39,8 +37,8 @@ function currentInputSnapshot() {
   };
 }
 
-function parseStructured(raw: string): StructuredAnalysis {
-  const get = (key: string): string => {
+function parseStructured(raw) {
+  const get = (key) => {
     const match = raw.match(new RegExp(`${key}:\\s*(.+?)(?=\\n[A-Z_]+:|$)`, 's'));
     return match ? match[1].trim() : '';
   };
@@ -54,21 +52,11 @@ function parseStructured(raw: string): StructuredAnalysis {
   };
 }
 
-export async function GET() {
-  const now = Date.now();
-
-  if (cache && now - cache.timestamp < CACHE_TTL_MS) {
-    return Response.json({
-      structured: cache.structured,
-      inputs: cache.inputs,
-      generatedAt: new Date(cache.timestamp).toISOString(),
-      cached: true,
-    });
-  }
-
+async function main() {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not configured', structured: null }, { status: 503 });
+    console.warn('→ ANTHROPIC_API_KEY not set. Keeping existing public/analysis.json.');
+    process.exit(0);
   }
 
   const inputs = currentInputSnapshot();
@@ -96,27 +84,36 @@ Current data:
 
 Use professional shipping and insurance terminology. No markdown. No bold. No extra lines.`;
 
-  try {
-    const client = new Anthropic({ apiKey });
-    const message = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 600,
-      messages: [{ role: 'user', content: prompt }],
-    });
+  console.log('→ Generating briefing via Claude Haiku 4.5…');
+  const client = new Anthropic({ apiKey });
+  const message = await client.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 600,
+    messages: [{ role: 'user', content: prompt }],
+  });
 
-    const raw = (message.content[0] as { type: string; text: string }).text.trim();
-    const structured = parseStructured(raw);
+  const raw = message.content[0].text.trim();
+  const structured = parseStructured(raw);
 
-    cache = { structured, inputs, timestamp: now };
-
-    return Response.json({
-      structured,
-      inputs,
-      generatedAt: new Date(now).toISOString(),
-      cached: false,
-    });
-  } catch (err) {
-    console.error('Anthropic API error:', err);
-    return Response.json({ error: String(err), structured: null }, { status: 502 });
+  if (!structured.intro) {
+    console.warn('→ LLM response missing INTRO field. Keeping existing public/analysis.json.');
+    console.warn('  Raw response:', raw.slice(0, 200));
+    process.exit(0);
   }
+
+  const payload = {
+    structured,
+    inputs,
+    generatedAt: new Date().toISOString(),
+  };
+
+  mkdirSync(dirname(OUTPUT), { recursive: true });
+  writeFileSync(OUTPUT, JSON.stringify(payload, null, 2));
+  console.log(`✓ Wrote ${OUTPUT}`);
 }
+
+main().catch((err) => {
+  console.error('✗ Briefing generation failed:', err.message);
+  console.warn('  Keeping existing public/analysis.json.');
+  process.exit(0);
+});

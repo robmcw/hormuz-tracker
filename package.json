@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-analysis.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate:analysis": "node scripts/generate-analysis.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.89.0",
