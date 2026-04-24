@@ -2,8 +2,6 @@
 
 import { useEffect, useState, useCallback, type ReactNode } from 'react';
 import HeadlineMetrics from '@/components/HeadlineMetrics';
-import AIAssessment from '@/components/AIAssessment';
-import SignalBreakdown from '@/components/SignalBreakdown';
 import TransitChart from '@/components/TransitChart';
 import IncidentLog from '@/components/IncidentLog';
 import CarrierStatus from '@/components/CarrierStatus';
@@ -47,13 +45,12 @@ interface SignalsData {
 }
 
 interface StructuredAnalysis {
-  intro: string; direction: string; directionText: string;
-  primaryDriver: string; contrarian: string; changeCondition: string;
+  intro: string;
 }
 
 interface AnalysisData {
-  structured: StructuredAnalysis | null; inputs?: object;
-  generatedAt: string; cached: boolean; error?: string;
+  structured: StructuredAnalysis | null;
+  generatedAt: string;
 }
 
 interface Article {
@@ -71,10 +68,6 @@ const RISK_COLOR: Record<string, string> = {
 };
 
 const BORDER = '0.5px solid var(--border)';
-
-// Which signal IDs still appear in the breakdown — the rest are shown elsewhere
-// (transit → headline + chart; insurance → headline; carriers → carrier panel).
-const BREAKDOWN_SIGNAL_IDS = ['physical_threat', 'political', 'dark'];
 
 function timeAgo(iso: string): string {
   const m = Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
@@ -179,9 +172,6 @@ export default function Home() {
     return () => { clearInterval(t1); clearInterval(t2); };
   }, [load]);
 
-  const filteredSignals = (signals?.signals ?? [])
-    .filter(s => BREAKDOWN_SIGNAL_IDS.includes(s.id));
-
   const headerTime = signals?.timestamp
     ? `Analysed ${new Date(signals.timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} UTC · ${formatDate(signals.timestamp)}`
     : 'loading…';
@@ -194,27 +184,30 @@ export default function Home() {
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <header
-        className="sticky top-0 z-50 flex items-center justify-between px-8 h-[52px]"
+        className="sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 h-[52px] gap-3"
         style={{
           borderBottom: BORDER,
           background: 'rgba(8,17,30,0.94)',
           backdropFilter: 'blur(16px)',
         }}
       >
-        <div className="flex items-baseline gap-2.5">
+        <div className="flex items-baseline gap-2.5 min-w-0">
           <span
-            className="font-bold tracking-[0.04em]"
+            className="font-bold tracking-[0.04em] shrink-0"
             style={{ fontSize: 15 }}
           >
             Hormuz Intelligence
           </span>
-          <span style={{ fontSize: 'var(--text-secondary)', color: 'var(--faint)' }}>
+          <span
+            className="hidden sm:inline truncate"
+            style={{ fontSize: 'var(--text-secondary)', color: 'var(--faint)' }}
+          >
             Strait risk monitor
           </span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4 shrink-0">
           <div
-            className="flex items-center gap-1.5 font-mono"
+            className="hidden md:flex items-center gap-1.5 font-mono"
             style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
           >
             <span
@@ -227,8 +220,16 @@ export default function Home() {
             />
             {headerTime}
           </div>
+          <span
+            className="md:hidden inline-block rounded-full animate-pulse"
+            style={{
+              width: 6, height: 6,
+              background: 'var(--critical)',
+              boxShadow: '0 0 6px var(--critical)',
+            }}
+          />
           <div
-            className="font-mono tracking-[0.1em] px-2.5 py-1 rounded-[4px]"
+            className="font-mono tracking-[0.1em] px-2 md:px-2.5 py-1 rounded-[4px] whitespace-nowrap"
             style={{
               fontSize: 'var(--text-label)',
               background: 'var(--critical-bg)',
@@ -236,13 +237,16 @@ export default function Home() {
               color: riskColor,
             }}
           >
-            {(signals?.riskPhrase ?? 'Effective Closure').toUpperCase()} · DETERIORATING
+            <span className="hidden sm:inline">
+              {(signals?.riskPhrase ?? 'Effective Closure').toUpperCase()} · DETERIORATING
+            </span>
+            <span className="sm:hidden">DETERIORATING</span>
           </div>
         </div>
       </header>
 
-      {/* ── Hourly briefing (LLM-generated) ─────────────────────────────── */}
-      <section className="px-8 py-10" style={{ borderBottom: BORDER }}>
+      {/* ── Situation briefing (LLM-generated) ──────────────────────────── */}
+      <section className="px-4 md:px-8 py-7 md:py-10" style={{ borderBottom: BORDER }}>
         <div className="flex items-baseline justify-between mb-5">
           <div className="sec-label" style={{ marginBottom: 0 }}>
             Situation briefing
@@ -291,22 +295,13 @@ export default function Home() {
       {/* ── Incident log (hero + chronological) ─────────────────────────── */}
       <IncidentLog incidents={signals?.incidents ?? []} />
 
-      {/* ── AI Risk Assessment ──────────────────────────────────────────── */}
-      <AIAssessment analysis={analysis} />
-
       {/* ── Transit chart ───────────────────────────────────────────────── */}
-      <div className="px-8 py-8" style={{ borderBottom: BORDER }}>
+      <div className="px-4 md:px-8 py-6 md:py-8" style={{ borderBottom: BORDER }}>
         <SectionHeader
           label={`Daily transits · 1 Feb to ${signals ? formatDate(signals.timestamp).split(' ').slice(0, 2).join(' ') : '—'} 2026`}
           updatedAt={signals?.timestamp}
         />
         <TransitChart history={signals?.transitHistory ?? []} />
-      </div>
-
-      {/* ── Signal breakdown (3 cards only) ─────────────────────────────── */}
-      <div className="px-8 py-8" style={{ borderBottom: BORDER }}>
-        <SectionHeader label="Risk signal breakdown" updatedAt={signals?.timestamp} />
-        <SignalBreakdown signals={filteredSignals} />
       </div>
 
       {/* ── Carriers + Pipelines ────────────────────────────────────────── */}
@@ -316,7 +311,7 @@ export default function Home() {
       />
 
       {/* ── News feed ───────────────────────────────────────────────────── */}
-      <div className="px-8 pt-8 pb-4" style={{ borderBottom: BORDER }}>
+      <div className="px-4 md:px-8 pt-6 md:pt-8 pb-4" style={{ borderBottom: BORDER }}>
         <SectionHeader label="Live news feed" updatedAt={newsUpdatedAt} />
         {articles.length === 0 && (
           <div
@@ -326,22 +321,16 @@ export default function Home() {
             Loading feed…
           </div>
         )}
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-          {articles.slice(0, 6).map((a, i) => (
+        <div className="news-grid grid grid-cols-1 md:grid-cols-3">
+          {articles.slice(0, 3).map((a, i) => (
             <a
               key={i}
               href={a.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block group transition-colors"
-              style={{
-                padding: '0 0 22px',
-                paddingRight: (i + 1) % 3 !== 0 ? 28 : 0,
-                borderRight: (i + 1) % 3 !== 0 ? BORDER : 'none',
-                marginBottom: i < 3 ? 22 : 0,
-                borderBottom: i < 3 ? BORDER : 'none',
-                paddingLeft: i % 3 !== 0 ? 28 : 0,
-              }}
+              className="news-item block group transition-colors"
+              data-col={i % 3}
+              data-row={Math.floor(i / 3)}
             >
               <div
                 className="font-mono mb-2 tracking-[0.06em] uppercase"
@@ -361,7 +350,7 @@ export default function Home() {
       </div>
 
       {/* ── Footer ──────────────────────────────────────────────────────── */}
-      <footer className="flex items-center justify-between px-8 py-5">
+      <footer className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 px-4 md:px-8 py-5">
         <p
           className="font-mono leading-relaxed"
           style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
@@ -370,7 +359,7 @@ export default function Home() {
           AI by Claude (Anthropic) · Simulated figures labelled SIM
         </p>
         <p
-          className="font-mono"
+          className="font-mono shrink-0"
           style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
         >
           Not investment or legal advice · For professional use only

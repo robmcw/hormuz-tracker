@@ -1,23 +1,6 @@
 {
   "structured": {
-    "intro": "The Strait of Hormuz has functionally closed to commercial shipping. IRGC forces seized **MSC Francesca and Epaminondas** on **22 April**, bringing confirmed vessel incidents to **six in sixteen days**. Transit volumes have collapsed to **7 vessels/day** against a **110/day baseline** — a **94% reduction**. War-risk premium is **unquotable** across Lloyd's syndicates following the **Skylight constructive total loss** on 10 April, and AG–East VLCC rates have reached **$165k/day**, roughly **six times the pre-crisis anchor**.",
-    "direction": "WORSENING",
-    "directionText": "Risk trajectory continues to deteriorate across physical, political, and market dimensions. No credible stabilising catalyst is visible in the coming two weeks.",
-    "primaryDriver": "IRGC operational tempo is the dominant factor. Five physical incidents involving named vessels in sixteen days, including one confirmed constructive total loss, places the strait outside standard underwriting parameters.",
-    "contrarian": "ADNOC sovereign tankers continue to transit under escort, indicating selective rather than total closure — a narrow signal that commercial traffic could resume quickly if Iranian posture shifts.",
-    "changeCondition": "A multi-week absence of new physical incidents, combined with Lloyd's syndicates re-opening quotes at any price, would be the minimum condition for de-escalation recognition."
-  },
-  "inputs": {
-    "transitCount": 7,
-    "freightRate_kday": 165,
-    "darkVessels": 16,
-    "warRiskPremium": "Unquotable (VLCC/LR2); last quoted 5.2% hull value",
-    "transitBaseline": 110,
-    "freightBaseline_k": 28,
-    "carriersSuspended": "Maersk, MSC, Hapag-Lloyd, CMA CGM",
-    "carriersLimited": "COSCO (limited, under escort); ADNOC (active, sovereign status)",
-    "incidents": "MSC Francesca and Epaminondas seized by IRGC Navy Apr 22, directed to Iranian coast; Euphoria targeted by IRGC Apr 22, grounded off Iranian coast; Elpis (sanctioned Iranian shadow fleet tanker) transited in defiance of US naval blockade Apr 14; Skylight (VLCC) missile strike Apr 10, constructive total loss; MKD Vyom (LR2) drone strike Apr 8, diverted to Fujairah",
-    "bypassStatus": "East-West Pipeline 62%; Habshan–Fujairah 38%; Kirkuk–Ceyhan 22%"
+    "intro": "The Strait of Hormuz has functionally closed to commercial shipping. IRGC forces seized **MSC Francesca and Epaminondas** on **22 April**, bringing confirmed vessel incidents to **six in sixteen days**. Transit volumes have collapsed to **7 vessels/day** against a **110/day baseline** — a **94% reduction**. War-risk premium is **unquotable** across Lloyd's syndicates following the **Skylight constructive total loss** on 10 April, and AG–East VLCC rates have reached **$165k/day**, roughly **six times the pre-crisis anchor**."
   },
   "generatedAt": "2026-04-23T12:00:00.000Z"
 }

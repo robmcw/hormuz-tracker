@@ -25,10 +25,8 @@ function StatCell({ label, value, delta, tone = 'warning', loading, last }: Cell
 
   return (
     <div
-      style={{
-        padding: '24px 28px',
-        borderRight: last ? 'none' : '0.5px solid var(--border)',
-      }}
+      className="stat-cell"
+      data-last={last ? 'true' : 'false'}
     >
       <div
         className="font-mono uppercase mb-3"
@@ -70,7 +68,7 @@ export default function HeadlineMetrics({ transitCount, brentPrice, brentPct, fr
 
   return (
     <div
-      className="grid grid-cols-4"
+      className="stat-grid grid grid-cols-2 md:grid-cols-4"
       style={{ borderBottom: '0.5px solid var(--border)' }}
     >
       <StatCell

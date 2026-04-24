@@ -42,14 +42,11 @@ function pipeTextColor(u: number): string {
 export default function CarrierStatus({ carriers, pipelines }: Props) {
   return (
     <div
-      className="grid"
-      style={{
-        gridTemplateColumns: '1fr 1fr',
-        borderBottom: '0.5px solid var(--border)',
-      }}
+      className="grid grid-cols-1 md:grid-cols-2"
+      style={{ borderBottom: '0.5px solid var(--border)' }}
     >
       {/* ── Carriers ─────────────────────────────── */}
-      <div style={{ padding: '28px 32px', borderRight: '0.5px solid var(--border)' }}>
+      <div className="px-4 md:px-8 py-6 md:py-7 carrier-cell">
         <div className="sec-label">Carrier status</div>
         {carriers.map((c, i) => {
           const b = STATUS_BADGE[c.status];
@@ -93,7 +90,7 @@ export default function CarrierStatus({ carriers, pipelines }: Props) {
       </div>
 
       {/* ── Pipelines ────────────────────────────── */}
-      <div style={{ padding: '28px 32px' }}>
+      <div className="px-4 md:px-8 py-6 md:py-7">
         <div className="sec-label">Bypass pipelines</div>
         {pipelines.map((p, i) => (
           <div

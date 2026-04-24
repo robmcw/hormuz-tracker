@@ -90,10 +90,10 @@ export default function UnderwriterContext() {
   const multiple = (latest / first).toFixed(0);
 
   return (
-    <section className="px-8 py-8" style={{ borderBottom: '0.5px solid var(--border)' }}>
+    <section className="px-4 md:px-8 py-6 md:py-8" style={{ borderBottom: '0.5px solid var(--border)' }}>
       <div className="sec-label">Underwriter context</div>
 
-      <div className="grid gap-4" style={{ gridTemplateColumns: '1.3fr 1fr 1fr' }}>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr]">
 
         {/* ── Rate history sparkline ─────────────────────────────── */}
         <Card>

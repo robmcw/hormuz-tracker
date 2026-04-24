@@ -79,7 +79,7 @@ export default function IncidentLog({ incidents }: Props) {
   if (!incidents.length) {
     return (
       <div
-        className="font-mono animate-pulse px-8 py-6"
+        className="font-mono animate-pulse px-4 md:px-8 py-6"
         style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
       >
         Loading incidents…
@@ -94,7 +94,7 @@ export default function IncidentLog({ incidents }: Props) {
 
   return (
     <div style={{ borderBottom: '0.5px solid var(--border)' }}>
-      <div className="px-8 pt-8 pb-6">
+      <div className="px-4 md:px-8 pt-6 md:pt-8 pb-4 md:pb-6">
         <div className="sec-label">Incident log</div>
 
         {/* ── Hero block ───────────────────────────── */}
@@ -153,9 +153,9 @@ export default function IncidentLog({ incidents }: Props) {
 
         {/* ── Chronological list ───────────────────── */}
         <div className="flex flex-col">
-          {rest.slice(0, 6).map((inc, i) => {
+          {rest.slice(0, 4).map((inc, i) => {
             const t = TONE_COLOR[SEV_TONE[inc.severity]];
-            const last = i === Math.min(rest.length, 6) - 1;
+            const last = i === Math.min(rest.length, 4) - 1;
             return (
               <div
                 key={`${inc.date}-${inc.vessel}`}

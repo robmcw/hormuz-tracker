@@ -73,14 +73,15 @@ export default function CommissionModal() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-[640px]"
+        className="relative w-full max-w-[640px] p-6 sm:p-10 md:p-11"
         style={{
           background: 'var(--surface)',
           border: '0.5px solid var(--border)',
           borderRadius: 6,
-          padding: '44px 44px 36px',
           boxShadow: '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,158,11,0.08)',
           animation: 'modalIn 260ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+          maxHeight: '90vh',
+          overflowY: 'auto',
         }}
       >
         <button
@@ -116,8 +117,8 @@ export default function CommissionModal() {
 
         <h2
           id="commission-modal-title"
+          className="text-[20px] sm:text-[24px]"
           style={{
-            fontSize: 24,
             fontWeight: 600,
             lineHeight: 1.3,
             color: 'var(--text)',

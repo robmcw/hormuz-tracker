@@ -37,19 +37,10 @@ function currentInputSnapshot() {
   };
 }
 
-function parseStructured(raw) {
-  const get = (key) => {
-    const match = raw.match(new RegExp(`${key}:\\s*(.+?)(?=\\n[A-Z_]+:|$)`, 's'));
-    return match ? match[1].trim() : '';
-  };
-  return {
-    intro:           get('INTRO'),
-    direction:       get('DIRECTION'),
-    directionText:   get('DIRECTION_TEXT'),
-    primaryDriver:   get('PRIMARY_DRIVER'),
-    contrarian:      get('CONTRARIAN'),
-    changeCondition: get('CHANGE_CONDITION'),
-  };
+function parseIntro(raw) {
+  // Accept either an "INTRO: ..." prefix or raw prose.
+  const match = raw.match(/INTRO:\s*(.+)/s);
+  return (match ? match[1] : raw).trim();
 }
 
 async function main() {
@@ -63,14 +54,7 @@ async function main() {
   const transitDrop = Math.round((1 - inputs.transitCount / inputs.transitBaseline) * 100);
   const freightMultiple = Math.round(inputs.freightRate_kday / inputs.freightBaseline_k);
 
-  const prompt = `You are a maritime risk analyst. Respond ONLY in this exact format — no other text, no markdown:
-
-INTRO: [3–4 sentences for the top of a professional maritime intelligence briefing. Lead with the single most significant recent development from the incident data. Integrate current transit levels and freight market conditions. Write for a senior shipping or energy professional. Wrap 4–6 of the most scannable facts (vessel names, numbers, percentages, status changes, key dates) in double asterisks like **this** for visual emphasis. Do not use any other formatting.]
-DIRECTION: [one word: WORSENING, STABLE, or IMPROVING]
-DIRECTION_TEXT: [1–2 plain sentences on overall risk trajectory]
-PRIMARY_DRIVER: [1–2 plain sentences naming the single dominant risk factor]
-CONTRARIAN: [1 plain sentence on one signal that complicates the picture]
-CHANGE_CONDITION: [1 plain sentence on what would need to change to alter the assessment]
+  const prompt = `You are a maritime risk analyst. Write 3–4 sentences for the top of a professional maritime intelligence briefing. Lead with the single most significant recent development from the incident data. Integrate current transit levels and freight market conditions. Write for a senior shipping or energy professional. Wrap 4–6 of the most scannable facts (vessel names, numbers, percentages, status changes, key dates) in double asterisks like **this** for visual emphasis. Do not use any other formatting, headings, or preamble. Output only the paragraph.
 
 Current data:
 - Vessel transits: ${inputs.transitCount}/day (baseline ${inputs.transitBaseline}/day; −${transitDrop}% from normal)
@@ -88,22 +72,20 @@ Use professional shipping and insurance terminology. No markdown. No bold. No ex
   const client = new Anthropic({ apiKey });
   const message = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 600,
+    max_tokens: 300,
     messages: [{ role: 'user', content: prompt }],
   });
 
   const raw = message.content[0].text.trim();
-  const structured = parseStructured(raw);
+  const intro = parseIntro(raw);
 
-  if (!structured.intro) {
-    console.warn('→ LLM response missing INTRO field. Keeping existing public/analysis.json.');
-    console.warn('  Raw response:', raw.slice(0, 200));
+  if (!intro) {
+    console.warn('→ LLM response empty. Keeping existing public/analysis.json.');
     process.exit(0);
   }
 
   const payload = {
-    structured,
-    inputs,
+    structured: { intro },
     generatedAt: new Date().toISOString(),
   };
 
