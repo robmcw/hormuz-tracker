@@ -54,7 +54,7 @@ async function main() {
   const transitDrop = Math.round((1 - inputs.transitCount / inputs.transitBaseline) * 100);
   const freightMultiple = Math.round(inputs.freightRate_kday / inputs.freightBaseline_k);
 
-  const prompt = `You are a maritime risk analyst. Write 3–4 sentences for the top of a professional maritime intelligence briefing. Lead with the single most significant recent development from the incident data. Integrate current transit levels and freight market conditions. Write for a senior shipping or energy professional. Wrap 4–6 of the most scannable facts (vessel names, numbers, percentages, status changes, key dates) in double asterisks like **this** for visual emphasis. Do not use any other formatting, headings, or preamble. Output only the paragraph.
+  const prompt = `You are a maritime risk analyst. Write exactly 2 tight sentences for the top of a professional maritime intelligence briefing. Lead with the single most significant recent development from the incident data, anchored by the strongest market signal (transits, AP, or freight). Write for a senior shipping or energy professional. Wrap 3–4 of the most scannable facts (vessel names, numbers, percentages, key dates) in double asterisks like **this** for visual emphasis. Do not use any other formatting, headings, or preamble. Output only the two sentences, nothing else.
 
 Current data:
 - Vessel transits: ${inputs.transitCount}/day (baseline ${inputs.transitBaseline}/day; −${transitDrop}% from normal)
@@ -72,7 +72,7 @@ Use professional shipping and insurance terminology. No markdown. No bold. No ex
   const client = new Anthropic({ apiKey });
   const message = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 300,
+    max_tokens: 180,
     messages: [{ role: 'user', content: prompt }],
   });
 
