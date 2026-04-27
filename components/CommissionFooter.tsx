@@ -48,7 +48,7 @@ export default function CommissionFooter() {
 
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <a
-            href="https://cal.com/browsergroup/20min"
+            href="https://calendar.app.google/PeHDxggJAjXRudgs6"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 font-mono uppercase transition-transform"

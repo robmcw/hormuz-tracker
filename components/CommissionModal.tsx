@@ -177,7 +177,7 @@ export default function CommissionModal() {
 
         <div className="flex flex-wrap items-center gap-3 mb-5">
           <a
-            href="https://cal.com/browsergroup/20min"
+            href="https://calendar.app.google/PeHDxggJAjXRudgs6"
             target="_blank"
             rel="noopener noreferrer"
             onClick={dismiss}
