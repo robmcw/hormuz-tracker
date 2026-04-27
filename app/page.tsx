@@ -7,6 +7,7 @@ import IncidentLog from '@/components/IncidentLog';
 import CarrierStatus from '@/components/CarrierStatus';
 import UnderwriterContext from '@/components/UnderwriterContext';
 import CommissionModal from '@/components/CommissionModal';
+import CommissionFooter from '@/components/CommissionFooter';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -348,6 +349,9 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* ── Bottom CTA (always visible, no dismissal) ──────────────────── */}
+      <CommissionFooter />
 
       {/* ── Footer ──────────────────────────────────────────────────────── */}
       <footer className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 px-4 md:px-8 py-5">

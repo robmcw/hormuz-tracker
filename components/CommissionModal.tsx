@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'hormuz-commission-modal-dismissed-at';
-const SCROLL_TRIGGER = 0.35;        // fire at 35% of page scrolled
-const MIN_DELAY_MS   = 12_000;      // don't fire before 12s on page
-const COOLDOWN_MS    = 60 * 60_000; // re-show 1h after dismissal
+const STORAGE_KEY     = 'hormuz-commission-modal-dismissed-at';
+const SCROLL_TRIGGER  = 0.35;        // fire at 35% of page scrolled
+const MIN_DELAY_MS    = 12_000;      // don't fire before 12s on page
+const TIME_FALLBACK_MS = 30_000;     // fire after 30s of foreground dwell, even without scroll
+const COOLDOWN_MS     = 60 * 60_000; // re-show 1h after dismissal
 
 export default function CommissionModal() {
   const [open, setOpen]       = useState(false);
@@ -20,24 +21,48 @@ export default function CommissionModal() {
     const dismissedAt = Number(localStorage.getItem(STORAGE_KEY) ?? 0);
     if (dismissedAt && Date.now() - dismissedAt < COOLDOWN_MS) return;
 
-    const startedAt = Date.now();
     let fired = false;
+    let foregroundMs = 0;
+    let lastTick = Date.now();
+    const startedAt = Date.now();
+
+    const fire = () => {
+      if (fired) return;
+      fired = true;
+      setOpen(true);
+      window.removeEventListener('scroll', onScroll);
+      clearInterval(dwellTimer);
+    };
 
     const onScroll = () => {
       if (fired) return;
       const scrolled = window.scrollY;
       const height   = document.documentElement.scrollHeight - window.innerHeight;
       const ratio    = height > 0 ? scrolled / height : 0;
-      const elapsed  = Date.now() - startedAt;
-      if (ratio >= SCROLL_TRIGGER && elapsed >= MIN_DELAY_MS) {
-        fired = true;
-        setOpen(true);
-        window.removeEventListener('scroll', onScroll);
-      }
+      if (ratio >= SCROLL_TRIGGER && Date.now() - startedAt >= MIN_DELAY_MS) fire();
     };
 
+    // Foreground-only dwell timer: only counts time while the tab is visible,
+    // so a backgrounded tab doesn't accumulate seconds and ambush the user.
+    const dwellTimer = setInterval(() => {
+      if (fired) return;
+      const now = Date.now();
+      if (document.visibilityState === 'visible') {
+        foregroundMs += now - lastTick;
+      }
+      lastTick = now;
+      if (foregroundMs >= TIME_FALLBACK_MS) fire();
+    }, 1000);
+
+    const onVisibility = () => { lastTick = Date.now(); };
+    document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('visibilitychange', onVisibility);
+      clearInterval(dwellTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -82,6 +107,9 @@ export default function CommissionModal() {
           animation: 'modalIn 260ms cubic-bezier(0.2, 0.8, 0.2, 1)',
           maxHeight: '90vh',
           overflowY: 'auto',
+          overflowX: 'hidden',
+          overflowWrap: 'break-word',
+          wordBreak: 'break-word',
         }}
       >
         <button
