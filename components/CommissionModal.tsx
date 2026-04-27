@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 const STORAGE_KEY     = 'hormuz-commission-modal-dismissed-at';
 const SCROLL_TRIGGER  = 0.35;        // fire at 35% of page scrolled
-const MIN_DELAY_MS    = 12_000;      // don't fire before 12s on page
-const TIME_FALLBACK_MS = 30_000;     // fire after 30s of foreground dwell, even without scroll
+const MIN_DELAY_MS    = 8_000;       // don't fire before 8s on page
+const TIME_FALLBACK_MS = 15_000;     // fire after 15s of foreground dwell, even without scroll
 const COOLDOWN_MS     = 60 * 60_000; // re-show 1h after dismissal
 
 export default function CommissionModal() {
