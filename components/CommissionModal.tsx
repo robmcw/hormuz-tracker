@@ -170,9 +170,9 @@ export default function CommissionModal() {
           }}
         >
           The 2-week accelerator is what this <em style={{ fontStyle: 'italic', color: 'var(--text)' }}>isn&apos;t</em>:
-          your data plumbed in, your users in the room while we iterate, and production handoff to your team.
-          Custom underwriter co-pilots. Internal intel dashboards. Broker-facing submission triage.
-          One sharp workflow, shipped.
+          your workflow mapped, your problem scoped, your users in the room while we iterate, and production
+          handoff to your team. Custom underwriter co-pilots. Internal intel dashboards. Broker-facing
+          submission triage. One sharp workflow, shipped.
         </p>
 
         <div className="flex flex-wrap items-center gap-3 mb-5">

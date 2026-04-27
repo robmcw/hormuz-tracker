@@ -41,8 +41,8 @@ export default function CommissionFooter() {
               maxWidth: 560,
             }}
           >
-            A scoped, production-ready tool inside your business in one to two weeks.
-            Your data, your users, ours to ship.
+            A scoped, production-ready tool inside your business in two weeks.
+            Your workflow, your users, ours to ship.
           </p>
         </div>
 
