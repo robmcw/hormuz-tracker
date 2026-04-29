@@ -1,0 +1,68 @@
+{
+  "incidents": [
+    {
+      "date": "2026-04-22",
+      "vessel": "MSC FRANCESCA",
+      "type": "Container Ship",
+      "flag": "Panama",
+      "event": "Seized by IRGC Navy and directed toward the Iranian coast. One of two vessels seized in a coordinated interdiction involving three ships struck in the Strait of Hormuz. Crew and cargo status unknown.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "EPAMINONDAS",
+      "type": "Tanker",
+      "flag": "Unknown",
+      "event": "Seized by IRGC Navy and directed toward the Iranian coast in the same coordinated interdiction as MSC Francesca. IRGC Navy confirmed seizure via statement.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "EUPHORIA",
+      "type": "Tanker",
+      "flag": "Unknown",
+      "event": "Targeted by IRGC forces and now reported grounded off the Iranian coast. One of three vessels struck in coordinated IRGC action. Reported by IRGC-affiliated Fars news agency.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-14",
+      "vessel": "ELPIS",
+      "type": "Oil Tanker",
+      "flag": "Shadow Fleet",
+      "event": "Sanctioned Iranian shadow fleet tanker successfully traversed the Strait of Hormuz in direct defiance of US naval blockade, which came into force the same day. Tracked by Kpler. Other vessels diverted or halted. Demonstrates limits of US interdiction posture.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-13",
+      "vessel": "RICH STARRY",
+      "type": "LPG Carrier",
+      "flag": "Singapore",
+      "event": "Successful transit under US Navy escort. One of only three transits recorded on Apr 13. Vessel reported IRGC visual surveillance throughout passage.",
+      "severity": "MODERATE",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-10",
+      "vessel": "SKYLIGHT",
+      "type": "VLCC",
+      "flag": "Greece",
+      "event": "Direct missile strike amidships. Vessel abandoned by crew of 26; all evacuated safely. Constructive total loss declared.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-08",
+      "vessel": "MKD VYOM",
+      "type": "LR2 Tanker",
+      "flag": "India",
+      "event": "Drone strike to superstructure. Minor damage, no casualties. Vessel diverted to Fujairah for inspection.",
+      "severity": "HIGH",
+      "simulated": false
+    }
+  ],
+  "generatedAt": "2026-04-23T08:00:00.000Z"
+}
