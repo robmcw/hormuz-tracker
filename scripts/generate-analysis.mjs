@@ -87,7 +87,7 @@ Use professional shipping and insurance terminology. No markdown. No bold. No ex
   const client = new Anthropic({ apiKey });
   const message = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 180,
+    max_tokens: 280,
     messages: [{ role: 'user', content: prompt }],
   });
 
