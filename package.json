@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-analysis.mjs",
+    "prebuild": "node scripts/generate-incidents.mjs && node scripts/generate-analysis.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate:analysis": "node scripts/generate-analysis.mjs"
+    "generate:incidents": "node scripts/generate-incidents.mjs",
+    "generate:analysis": "node scripts/generate-incidents.mjs && node scripts/generate-analysis.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.89.0",

@@ -1,5 +1,21 @@
 export const dynamic = 'force-dynamic';
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+// ─── Incidents (generated at build-time by generate-incidents.mjs) ────────────
+
+function loadIncidents() {
+  try {
+    const raw = readFileSync(join(process.cwd(), 'public', 'incidents.json'), 'utf8');
+    return JSON.parse(raw).incidents ?? [];
+  } catch {
+    return [];
+  }
+}
+
+const INCIDENTS = loadIncidents();
+
 // Seeded pseudo-RNG — consistent within each hour, shifts each hour
 function hourRng(slot: number): number {
   const seed = Math.floor(Date.now() / 3_600_000) * 100 + slot;
@@ -118,74 +134,6 @@ const SIGNALS = [
     severity: 88,
     direction: 'STABLE' as const,
     summary: 'Maersk, MSC, Hapag-Lloyd, CMA CGM all suspended since late March. COSCO continuing limited Chinese-flagged tankers. ADNOC active under sovereign status.',
-  },
-];
-
-// ─── Incidents ────────────────────────────────────────────────────────────────
-
-const INCIDENTS = [
-  {
-    date: '2026-04-22',
-    vessel: 'MSC FRANCESCA',
-    type: 'Container Ship',
-    flag: 'Panama',
-    event: 'Seized by IRGC Navy and directed toward the Iranian coast. One of two vessels seized in a coordinated interdiction involving three ships struck in the Strait of Hormuz. Crew and cargo status unknown.',
-    severity: 'CRITICAL' as const,
-    simulated: false,
-  },
-  {
-    date: '2026-04-22',
-    vessel: 'EPAMINONDAS',
-    type: 'Tanker',
-    flag: 'Unknown',
-    event: 'Seized by IRGC Navy and directed toward the Iranian coast in the same coordinated interdiction as MSC Francesca. IRGC Navy confirmed seizure via statement.',
-    severity: 'CRITICAL' as const,
-    simulated: false,
-  },
-  {
-    date: '2026-04-22',
-    vessel: 'EUPHORIA',
-    type: 'Tanker',
-    flag: 'Unknown',
-    event: 'Targeted by IRGC forces and now reported grounded off the Iranian coast. One of three vessels struck in coordinated IRGC action. Reported by IRGC-affiliated Fars news agency.',
-    severity: 'CRITICAL' as const,
-    simulated: false,
-  },
-  {
-    date: '2026-04-14',
-    vessel: 'ELPIS',
-    type: 'Oil Tanker',
-    flag: 'Shadow Fleet',
-    event: 'Sanctioned Iranian shadow fleet tanker successfully traversed the Strait of Hormuz in direct defiance of US naval blockade, which came into force the same day. Tracked by Kpler. Other vessels diverted or halted. Demonstrates limits of US interdiction posture.',
-    severity: 'HIGH' as const,
-    simulated: false,
-  },
-  {
-    date: '2026-04-13',
-    vessel: 'RICH STARRY',
-    type: 'LPG Carrier',
-    flag: 'Singapore',
-    event: 'Successful transit under US Navy escort. One of only three transits recorded on Apr 13. Vessel reported IRGC visual surveillance throughout passage.',
-    severity: 'MODERATE' as const,
-    simulated: false,
-  },
-  {
-    date: '2026-04-10',
-    vessel: 'SKYLIGHT',
-    type: 'VLCC',
-    flag: 'Greece',
-    event: 'Direct missile strike amidships. Vessel abandoned by crew of 26; all evacuated safely. Constructive total loss declared.',
-    severity: 'CRITICAL' as const,
-    simulated: false,
-  },
-  {
-    date: '2026-04-08',
-    vessel: 'MKD VYOM',
-    type: 'LR2 Tanker',
-    flag: 'India',
-    event: 'Drone strike to superstructure. Minor damage, no casualties. Vessel diverted to Fujairah for inspection.',
-    severity: 'HIGH' as const,
-    simulated: false,
   },
 ];
 

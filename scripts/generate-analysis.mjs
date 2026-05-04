@@ -9,12 +9,27 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUTPUT = join(__dirname, '..', 'public', 'analysis.json');
+const OUTPUT          = join(__dirname, '..', 'public', 'analysis.json');
+const INCIDENTS_FILE  = join(__dirname, '..', 'public', 'incidents.json');
+
+function loadIncidentSummary() {
+  if (!existsSync(INCIDENTS_FILE)) return 'No recent incident data available.';
+  try {
+    const { incidents } = JSON.parse(readFileSync(INCIDENTS_FILE, 'utf8'));
+    if (!Array.isArray(incidents) || incidents.length === 0) return 'No recent incidents recorded.';
+    return incidents
+      .slice(0, 6)
+      .map(inc => `${inc.vessel} (${inc.type}) ${inc.date}: ${inc.event}`)
+      .join('; ');
+  } catch {
+    return 'Incident data unavailable.';
+  }
+}
 
 function currentInputSnapshot() {
   const hourSeed = Math.floor(Date.now() / 3_600_000);
@@ -32,7 +47,7 @@ function currentInputSnapshot() {
     freightBaseline_k: 28,
     carriersSuspended: 'Maersk, MSC, Hapag-Lloyd, CMA CGM',
     carriersLimited:   'COSCO (limited, under escort); ADNOC (active, sovereign status)',
-    incidents:         'MSC Francesca and Epaminondas seized by IRGC Navy Apr 22, directed to Iranian coast; Euphoria targeted by IRGC Apr 22, grounded off Iranian coast; Elpis (sanctioned Iranian shadow fleet tanker) transited in defiance of US naval blockade Apr 14; Skylight (VLCC) missile strike Apr 10, constructive total loss; MKD Vyom (LR2) drone strike Apr 8, diverted to Fujairah',
+    incidents:         loadIncidentSummary(),
     bypassStatus:      'East-West Pipeline 62%; Habshan–Fujairah 38%; Kirkuk–Ceyhan 22%',
   };
 }
@@ -72,7 +87,7 @@ Use professional shipping and insurance terminology. No markdown. No bold. No ex
   const client = new Anthropic({ apiKey });
   const message = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 180,
+    max_tokens: 280,
     messages: [{ role: 'user', content: prompt }],
   });
 
