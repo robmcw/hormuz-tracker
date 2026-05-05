@@ -59,7 +59,12 @@ function readExisting() {
 
 // ─── LinkUp search ────────────────────────────────────────────────────────────
 
-async function linkupQuery(apiKey, query) {
+async function fetchIncidentsFromLinkup(apiKey) {
+  const fromDate = isoDateDaysAgo(21);
+  const query = `Strait of Hormuz maritime incidents vessel attacks seizures since ${fromDate} shipping risk`;
+
+  console.log(`→ Querying LinkUp: "${query}"`);
+
   const res = await fetch(LINKUP_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -80,29 +85,11 @@ async function linkupQuery(apiKey, query) {
   }
 
   const data = await res.json();
-  return data?.output?.incidents ?? data?.incidents ?? [];
-}
 
-async function fetchIncidentsFromLinkup(apiKey) {
-  const fromDate = isoDateDaysAgo(21);
-
-  // Query 1: specific vessel incidents in the past 21 days
-  const q1 = `Strait of Hormuz maritime incidents vessel attacks seizures since ${fromDate} shipping risk`;
-  // Query 2: aggregate/ongoing statistics — total ships attacked, running tolls, blockade impact
-  const q2 = `Strait of Hormuz total vessels attacked ships 2026 aggregate statistics blockade commercial shipping count`;
-
-  console.log(`→ Querying LinkUp (specific incidents): "${q1}"`);
-  console.log(`→ Querying LinkUp (aggregate statistics): "${q2}"`);
-
-  const [r1, r2] = await Promise.all([
-    linkupQuery(apiKey, q1).catch(err => { console.warn(`  Query 1 failed: ${err.message}`); return []; }),
-    linkupQuery(apiKey, q2).catch(err => { console.warn(`  Query 2 failed: ${err.message}`); return []; }),
-  ]);
-
-  console.log(`→ LinkUp returned ${r1.length} specific + ${r2.length} aggregate incidents`);
-
-  // Merge, deduplication handled by Claude
-  return [...r1, ...r2];
+  // LinkUp returns { output: { incidents: [...] } } for structured mode
+  const incidents = data?.output?.incidents ?? data?.incidents ?? [];
+  console.log(`→ LinkUp returned ${incidents.length} raw incidents`);
+  return incidents;
 }
 
 // ─── Claude evaluation ────────────────────────────────────────────────────────
@@ -113,20 +100,15 @@ async function evaluateWithClaude(client, rawIncidents) {
     return null;
   }
 
-  const today = new Date().toISOString().slice(0, 10);
-
-  const prompt = `You are a maritime intelligence analyst. Today's date is ${today}. Below is a list of Strait of Hormuz vessel incidents extracted from web sources. Your job is to:
+  const prompt = `You are a maritime intelligence analyst. Below is a list of Strait of Hormuz vessel incidents extracted from web sources. Your job is to:
 
 1. Remove any incidents that are clearly not real (speculative, duplicate, or unrelated to the Strait of Hormuz / Persian Gulf region).
-2. Each incident's date must reflect when the incident actually occurred, as reported in the source. For single events use the exact reported date. For ongoing or aggregate incidents (e.g. "since March 1, X vessels attacked"), use the start date of the period. Do not default to today's date — only use today if the source explicitly says the incident happened today.
-3. Verify dates are plausible: they must be on or before ${today} and must match the incident description. Drop an incident only if there is genuinely no date information at all in the source.
-4. Deduplicate aggressively: if the same vessel appears multiple times, keep only the single most informative entry. Two entries describing the same real-world event (even with slightly different dates or wording) count as duplicates — merge them into one using the most accurate date and most complete description.
-5. Correct obvious errors in vessel names or vessel types.
-6. Ensure each severity is appropriate: CRITICAL = direct attack/seizure/CTL, HIGH = significant damage/diversion, MODERATE = harassment/minor damage, LOW = warning/near-miss.
-7. Set simulated=false for all (these are real incidents).
-8. Return only the cleaned, de-duplicated list, ordered by date descending (most recent first).
-9. Keep vessel names in UPPERCASE.
-10. Cap the list at 10 incidents.
+2. Correct obvious errors in vessel names, dates, or vessel types.
+3. Ensure each severity is appropriate: CRITICAL = direct attack/seizure/CTL, HIGH = significant damage/diversion, MODERATE = harassment/minor damage, LOW = warning/near-miss.
+4. Set simulated=false for all (these are real incidents).
+5. Return only the cleaned, de-duplicated list, ordered by date descending (most recent first).
+6. Keep vessel names in UPPERCASE.
+7. Cap the list at 10 incidents.
 
 Raw incidents from web search:
 ${JSON.stringify(rawIncidents, null, 2)}

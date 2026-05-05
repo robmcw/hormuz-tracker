@@ -55,8 +55,7 @@ function relativeDate(iso: string): string {
   if (d <= 0) return 'Today';
   if (d === 1) return 'Yesterday';
   if (d < 7) return `${d}d ago`;
-  const dt = new Date(iso + 'T00:00:00Z');
-  return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  return iso;
 }
 
 function Severity({ severity, simulated }: { severity: Incident['severity']; simulated: boolean }) {
