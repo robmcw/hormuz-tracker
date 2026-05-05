@@ -105,8 +105,8 @@ async function evaluateWithClaude(client, rawIncidents) {
   const prompt = `You are a maritime intelligence analyst. Today's date is ${today}. Below is a list of Strait of Hormuz vessel incidents extracted from web sources. Your job is to:
 
 1. Remove any incidents that are clearly not real (speculative, duplicate, or unrelated to the Strait of Hormuz / Persian Gulf region).
-2. CRITICAL: Each incident's date must be the actual date the incident occurred, exactly as reported in the source material. Do not invent, estimate, or default to today's date. If the source does not clearly state when an incident occurred, omit that incident.
-3. Verify dates are plausible: they must be on or before ${today} and must match the incident description (e.g. an incident described as happening "last month" should not have today's date).
+2. Each incident's date must reflect when the incident actually occurred, as reported in the source. For single events use the exact reported date. For ongoing or aggregate incidents (e.g. "since March 1, X vessels attacked"), use the start date of the period. Do not default to today's date — only use today if the source explicitly says the incident happened today.
+3. Verify dates are plausible: they must be on or before ${today} and must match the incident description. Drop an incident only if there is genuinely no date information at all in the source.
 4. Correct obvious errors in vessel names or vessel types.
 5. Ensure each severity is appropriate: CRITICAL = direct attack/seizure/CTL, HIGH = significant damage/diversion, MODERATE = harassment/minor damage, LOW = warning/near-miss.
 6. Set simulated=false for all (these are real incidents).
