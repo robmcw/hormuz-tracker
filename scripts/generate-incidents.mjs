@@ -100,15 +100,19 @@ async function evaluateWithClaude(client, rawIncidents) {
     return null;
   }
 
-  const prompt = `You are a maritime intelligence analyst. Below is a list of Strait of Hormuz vessel incidents extracted from web sources. Your job is to:
+  const today = new Date().toISOString().slice(0, 10);
+
+  const prompt = `You are a maritime intelligence analyst. Today's date is ${today}. Below is a list of Strait of Hormuz vessel incidents extracted from web sources. Your job is to:
 
 1. Remove any incidents that are clearly not real (speculative, duplicate, or unrelated to the Strait of Hormuz / Persian Gulf region).
-2. Correct obvious errors in vessel names, dates, or vessel types.
-3. Ensure each severity is appropriate: CRITICAL = direct attack/seizure/CTL, HIGH = significant damage/diversion, MODERATE = harassment/minor damage, LOW = warning/near-miss.
-4. Set simulated=false for all (these are real incidents).
-5. Return only the cleaned, de-duplicated list, ordered by date descending (most recent first).
-6. Keep vessel names in UPPERCASE.
-7. Cap the list at 10 incidents.
+2. CRITICAL: Each incident's date must be the actual date the incident occurred, exactly as reported in the source material. Do not invent, estimate, or default to today's date. If the source does not clearly state when an incident occurred, omit that incident.
+3. Verify dates are plausible: they must be on or before ${today} and must match the incident description (e.g. an incident described as happening "last month" should not have today's date).
+4. Correct obvious errors in vessel names or vessel types.
+5. Ensure each severity is appropriate: CRITICAL = direct attack/seizure/CTL, HIGH = significant damage/diversion, MODERATE = harassment/minor damage, LOW = warning/near-miss.
+6. Set simulated=false for all (these are real incidents).
+7. Return only the cleaned, de-duplicated list, ordered by date descending (most recent first).
+8. Keep vessel names in UPPERCASE.
+9. Cap the list at 10 incidents.
 
 Raw incidents from web search:
 ${JSON.stringify(rawIncidents, null, 2)}

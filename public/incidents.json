@@ -2,19 +2,19 @@
   "incidents": [
     {
       "date": "2026-04-22",
-      "vessel": "EPAMINONDAS",
+      "vessel": "MSC FRANCESCA",
       "type": "Container Ship",
-      "flag": "GREECE",
-      "event": "Iran's Islamic Revolutionary Guard Corps (IRGC) Navy seized the Greek-owned container ship Epaminondas in the Strait of Hormuz after firing upon it, causing heavy damage to the navigation bridge. The vessel was escorted to Iranian ports for allegedly operating without proper permits and tampering with navigation systems.",
+      "flag": "Panama",
+      "event": "Seized by Iran's Islamic Revolutionary Guard Corps (IRGC) Navy in the Strait of Hormuz for allegedly operating without necessary permits and tampering with navigation systems; escorted to Iranian coast.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
       "date": "2026-04-22",
-      "vessel": "MSC FRANCESCA",
+      "vessel": "EPAMINONDAS",
       "type": "Container Ship",
-      "flag": "PANAMA",
-      "event": "The Panama-flagged container ship MSC Francesca was seized by Iran's IRGC Navy in the Strait of Hormuz for allegedly lacking transit permits and tampering with navigation systems. The vessel was directed to Iranian ports amid escalating tensions.",
+      "flag": "Greece",
+      "event": "Fired upon by IRGC gunboat in the Strait of Hormuz, sustaining heavy damage to the navigation bridge; later seized and escorted to Iranian coast.",
       "severity": "CRITICAL",
       "simulated": false
     },
@@ -22,8 +22,8 @@
       "date": "2026-04-22",
       "vessel": "EUPHORIA",
       "type": "Container Ship",
-      "flag": "UNKNOWN",
-      "event": "The container ship Euphoria was fired upon by Iranian forces in the Strait of Hormuz but escaped damage and continued toward the Gulf of Oman. The vessel was targeted in the same series of incidents as the Epaminondas and MSC Francesca.",
+      "flag": "Unknown",
+      "event": "Fired upon by IRGC in the Strait of Hormuz but escaped damage and continued toward Gulf of Oman.",
       "severity": "MODERATE",
       "simulated": false
     },
@@ -31,17 +31,44 @@
       "date": "2026-04-20",
       "vessel": "TOUSKA",
       "type": "Container Ship",
-      "flag": "IRAN",
-      "event": "The US Navy fired upon and seized the Iranian-flagged container ship Touska in the Gulf of Oman after it allegedly attempted to enter the Strait of Hormuz despite warnings under the US naval blockade.",
+      "flag": "Iran",
+      "event": "Seized by US Navy in the Gulf of Oman near the Strait of Hormuz after attempting to violate US naval blockade of Iranian ports.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
       "date": "2026-03-06",
-      "vessel": "MULTIPLE VESSELS",
-      "type": "Tankers, Cargo Ships",
-      "flag": "VARIOUS",
-      "event": "Approximately 10 vessels in or near the Strait of Hormuz were attacked over a multi-day period, including missile and drone strikes causing casualties and damage. The attacks severely disrupted shipping traffic, reducing tanker traffic by 90%.",
+      "vessel": "MUSSAFAH 2",
+      "type": "Tanker",
+      "flag": "Unknown",
+      "event": "Struck by missiles in the Strait of Hormuz while attempting to assist another attacked vessel; four fatalities reported.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-03-02",
+      "vessel": "SKYLIGHT",
+      "type": "Tanker",
+      "flag": "Palau",
+      "event": "Attacked in the Strait of Hormuz, resulting in one fatality; part of a series of attacks on vessels in the strait during early March 2026.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-03-02",
+      "vessel": "MKD VYOM",
+      "type": "Tanker",
+      "flag": "Unknown",
+      "event": "Attacked in the Strait of Hormuz, resulting in one fatality; part of multiple attacks in early March 2026.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-03-02",
+      "vessel": "STENA IMPERATIVE",
+      "type": "Tanker",
+      "flag": "Unknown",
+      "event": "Attacked in the Strait of Hormuz, resulting in one fatality; part of multiple attacks in early March 2026.",
       "severity": "CRITICAL",
       "simulated": false
     },
@@ -49,11 +76,11 @@
       "date": "2025-11-14",
       "vessel": "TALARA",
       "type": "Oil Tanker",
-      "flag": "MARSHALL ISLANDS",
-      "event": "Iran's IRGC seized the Marshall Islands-flagged oil tanker Talara in the Strait of Hormuz, citing unauthorized cargo. This was the first confirmed commercial vessel seizure by Iran since mid-2025.",
+      "flag": "Marshall Islands",
+      "event": "Seized by Iran's IRGC in the Strait of Hormuz for carrying unauthorized cargo; crew status and location unclear.",
       "severity": "CRITICAL",
       "simulated": false
     }
   ],
-  "generatedAt": "2026-04-29T17:00:54.261Z"
+  "generatedAt": "2026-04-29T17:09:11.100Z"
 }
