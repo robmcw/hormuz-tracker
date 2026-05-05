@@ -5,17 +5,8 @@
       "vessel": "MULTIPLE VESSELS",
       "type": "Various",
       "flag": "Various",
-      "event": "At least 29 commercial ships including 13 tankers have been attacked or reported incidents since March 1 in the Gulf, Strait of Hormuz, or Gulf of Oman, with ongoing maritime security threats.",
+      "event": "At least 29 commercial ships, including 13 tankers, attacked or reported incidents in the Gulf, Strait of Hormuz, or Gulf of Oman since March 1, 2026. Iranian fast-attack craft shadowed several vessels causing temporary halt in traffic.",
       "severity": "CRITICAL",
-      "simulated": false
-    },
-    {
-      "date": "2026-04-23",
-      "vessel": "MULTIPLE VESSELS",
-      "type": "Various",
-      "flag": "Various",
-      "event": "Several vessels reported being shadowed by Iranian fast-attack craft, causing temporary halt in traffic and anchoring in safe zones outside the strait.",
-      "severity": "HIGH",
       "simulated": false
     },
     {
@@ -23,43 +14,25 @@
       "vessel": "EPAMINONDAS",
       "type": "Container Ship",
       "flag": "Liberia",
-      "event": "Seizure of Epaminondas confirmed by Iranian authorities; crew held for investigative questioning after vessel attempted to evade IRGC patrols.",
-      "severity": "CRITICAL",
-      "simulated": false
-    },
-    {
-      "date": "2026-04-23",
-      "vessel": "MSC FRANCESCA",
-      "type": "Container Ship",
-      "flag": "Panama",
-      "event": "Seizure of MSC Francesca confirmed by Iranian authorities amid escalating maritime tensions; vessel detained for alleged violations.",
-      "severity": "CRITICAL",
-      "simulated": false
-    },
-    {
-      "date": "2026-04-23",
-      "vessel": "IRANIAN OIL TANKER",
-      "type": "Oil Tanker",
-      "flag": "Iran",
-      "event": "U.S. Navy seized an Iranian oil tanker en route to China in the Indian Ocean as part of ongoing enforcement operations amid rising tensions.",
+      "event": "Seized by Iran's IRGC Navy in the Strait of Hormuz after being fired upon; crew detained; vessel immobilized in Iranian waters.",
       "severity": "HIGH",
       "simulated": false
     },
     {
-      "date": "2026-04-22",
-      "vessel": "EPAMINONDAS",
-      "type": "Container Ship",
-      "flag": "Liberia",
-      "event": "Iranian IRGC Navy seized the container ship Epaminondas after firing warning shots; vessel sustained heavy damage but crew remained safe.",
-      "severity": "CRITICAL",
-      "simulated": false
-    },
-    {
-      "date": "2026-04-22",
+      "date": "2026-04-23",
       "vessel": "MSC FRANCESCA",
       "type": "Container Ship",
       "flag": "Panama",
-      "event": "Iranian IRGC Navy seized the container ship MSC Francesca for allegedly lacking transit permits; vessel moved into Iranian waters.",
+      "event": "Seized by Iran's IRGC Navy in the Strait of Hormuz for allegedly operating without necessary permits; vessel moved into Iranian territorial waters; crew held for investigative questioning.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-23",
+      "vessel": "N/A",
+      "type": "N/A",
+      "flag": "N/A",
+      "event": "U.S. President Donald Trump ordered US Navy to 'shoot and kill' any vessels suspected of laying mines in the Strait of Hormuz, escalating military posture.",
       "severity": "CRITICAL",
       "simulated": false
     },
@@ -68,28 +41,46 @@
       "vessel": "EUPHORIA",
       "type": "Container Ship",
       "flag": "Unknown",
-      "event": "The container ship Euphoria was fired upon by Iranian forces but escaped damage and continued transit towards Gulf of Oman.",
+      "event": "Fired upon by IRGC gunboat while transiting Strait of Hormuz; no damage or injuries; vessel continued towards Gulf of Oman.",
       "severity": "MODERATE",
       "simulated": false
     },
     {
-      "date": "2026-04-21",
-      "vessel": "UNKNOWN CONTAINER SHIP",
-      "type": "Container Ship",
-      "flag": "Unknown",
-      "event": "A container ship was struck near Oman causing heavy damage to the bridge.",
+      "date": "2026-04-15",
+      "vessel": "N/A",
+      "type": "N/A",
+      "flag": "N/A",
+      "event": "Iran threatened to sink US ships if Washington attempts to police the Strait of Hormuz, escalating military tensions.",
       "severity": "HIGH",
       "simulated": false
     },
     {
-      "date": "2026-04-21",
-      "vessel": "OUTBOUND CARGO SHIP",
-      "type": "Cargo Ship",
-      "flag": "Unknown",
-      "event": "An outbound cargo ship west of Iran was fired upon and stopped in the water; no injuries reported.",
+      "date": "2026-03-04",
+      "vessel": "N/A",
+      "type": "N/A",
+      "flag": "N/A",
+      "event": "Iran's Islamic Revolutionary Guard Corps (IRGC) formally closed the Strait of Hormuz to commercial traffic, issuing warnings against any vessels attempting passage.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-03-01",
+      "vessel": "MULTIPLE VESSELS",
+      "type": "Various",
+      "flag": "Various",
+      "event": "Iranian authorities seized two container vessels, detaining approximately 40 crew members. Vessel traffic collapsed from 120-140 daily transits to as few as 3-6 vessels per day. Escalating US-Iran tensions led to withdrawal of war-risk insurance coverage and US naval forces diverted approximately 33 commercial vessels.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-02-28",
+      "vessel": "TOUSKA",
+      "type": "Oil Tanker",
+      "flag": "Iranian",
+      "event": "U.S. Navy seized the Iranian-flagged oil tanker TOUSKA in the Indian Ocean amid rising tensions.",
       "severity": "HIGH",
       "simulated": false
     }
   ],
-  "generatedAt": "2026-05-05T11:35:50.066Z"
+  "generatedAt": "2026-05-05T11:39:05.129Z"
 }
