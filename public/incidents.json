@@ -2,37 +2,46 @@
   "incidents": [
     {
       "date": "2026-04-23",
-      "vessel": "UNKNOWN",
-      "type": "Commercial Shipping",
+      "vessel": "MULTIPLE VESSELS",
+      "type": "Various",
       "flag": "Various",
-      "event": "US President Donald Trump ordered US Navy to 'shoot and kill' any vessels suspected of laying mines in the Strait of Hormuz, escalating military posture and rules of engagement in the region.",
+      "event": "At least 29 commercial ships including 13 tankers have been attacked or reported incidents since March 1 in the Gulf, Strait of Hormuz, or Gulf of Oman, with ongoing maritime security threats.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
       "date": "2026-04-23",
-      "vessel": "UNKNOWN",
-      "type": "Oil Tanker",
-      "flag": "Iranian",
-      "event": "US Navy seized an Iranian oil tanker in the Indian Ocean en route to China, part of a series of maritime incidents amid rising tensions in the Strait of Hormuz.",
+      "vessel": "MULTIPLE VESSELS",
+      "type": "Various",
+      "flag": "Various",
+      "event": "Several vessels reported being shadowed by Iranian fast-attack craft, causing temporary halt in traffic and anchoring in safe zones outside the strait.",
       "severity": "HIGH",
       "simulated": false
     },
     {
       "date": "2026-04-23",
-      "vessel": "UNKNOWN",
+      "vessel": "EPAMINONDAS",
       "type": "Container Ship",
-      "flag": "Unknown",
-      "event": "Several foreign merchant vessels seized by IRGC Navy in the Strait of Hormuz amid escalating maritime tensions with the US. Vessels shadowed by Iranian fast-attack craft causing temporary halt in traffic.",
+      "flag": "Liberia",
+      "event": "Seizure of Epaminondas confirmed by Iranian authorities; crew held for investigative questioning after vessel attempted to evade IRGC patrols.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
-      "date": "2026-04-22",
-      "vessel": "EUPHORIA",
+      "date": "2026-04-23",
+      "vessel": "MSC FRANCESCA",
       "type": "Container Ship",
-      "flag": "Unknown",
-      "event": "Fired upon by IRGC gunboat in the Strait of Hormuz but escaped damage and continued transit towards Gulf of Oman.",
+      "flag": "Panama",
+      "event": "Seizure of MSC Francesca confirmed by Iranian authorities amid escalating maritime tensions; vessel detained for alleged violations.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-23",
+      "vessel": "IRANIAN OIL TANKER",
+      "type": "Oil Tanker",
+      "flag": "Iran",
+      "event": "U.S. Navy seized an Iranian oil tanker en route to China in the Indian Ocean as part of ongoing enforcement operations amid rising tensions.",
       "severity": "HIGH",
       "simulated": false
     },
@@ -41,7 +50,7 @@
       "vessel": "EPAMINONDAS",
       "type": "Container Ship",
       "flag": "Liberia",
-      "event": "Fired upon by IRGC gunboat while transiting the Strait of Hormuz, sustaining heavy damage to navigation bridge. Crew safe but vessel immobilized and drifting near Iranian coast. IRGC claimed seizure but Greek Ministry denied seizure, confirming attack and damage.",
+      "event": "Iranian IRGC Navy seized the container ship Epaminondas after firing warning shots; vessel sustained heavy damage but crew remained safe.",
       "severity": "CRITICAL",
       "simulated": false
     },
@@ -50,37 +59,37 @@
       "vessel": "MSC FRANCESCA",
       "type": "Container Ship",
       "flag": "Panama",
-      "event": "Seized by IRGC Navy in the Strait of Hormuz for allegedly operating without necessary permits. The vessel was immobilized and moved into Iranian territorial waters.",
+      "event": "Iranian IRGC Navy seized the container ship MSC Francesca for allegedly lacking transit permits; vessel moved into Iranian waters.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
-      "date": "2026-03-04",
-      "vessel": "UNKNOWN",
-      "type": "Commercial Shipping",
-      "flag": "Various",
-      "event": "IRGC formally closed the Strait of Hormuz to commercial traffic, warning vessels against passage. Tanker traffic plunged drastically, with Western-linked commercial shipping withdrawing entirely from the area.",
-      "severity": "CRITICAL",
+      "date": "2026-04-22",
+      "vessel": "EUPHORIA",
+      "type": "Container Ship",
+      "flag": "Unknown",
+      "event": "The container ship Euphoria was fired upon by Iranian forces but escaped damage and continued transit towards Gulf of Oman.",
+      "severity": "MODERATE",
       "simulated": false
     },
     {
-      "date": "2026-03-01",
-      "vessel": "UNKNOWN",
-      "type": "Commercial Shipping",
-      "flag": "Various",
-      "event": "Iranian authorities seized two container vessels and detained about 40 crew members. Operators responded by disabling AIS transponders, causing vessel traffic to collapse from 120-140 daily transits to as few as 3-6 per day.",
-      "severity": "CRITICAL",
+      "date": "2026-04-21",
+      "vessel": "UNKNOWN CONTAINER SHIP",
+      "type": "Container Ship",
+      "flag": "Unknown",
+      "event": "A container ship was struck near Oman causing heavy damage to the bridge.",
+      "severity": "HIGH",
       "simulated": false
     },
     {
-      "date": "2026-02-28",
-      "vessel": "UNKNOWN",
-      "type": "Commercial Shipping",
-      "flag": "Various",
-      "event": "Iran's Islamic Revolutionary Guard Corps (IRGC) issued warnings forbidding navigation through the Strait of Hormuz, effectively closing it to commercial traffic. US naval forces issued alerts advising vessels to avoid the area due to military activity.",
-      "severity": "CRITICAL",
+      "date": "2026-04-21",
+      "vessel": "OUTBOUND CARGO SHIP",
+      "type": "Cargo Ship",
+      "flag": "Unknown",
+      "event": "An outbound cargo ship west of Iran was fired upon and stopped in the water; no injuries reported.",
+      "severity": "HIGH",
       "simulated": false
     }
   ],
-  "generatedAt": "2026-05-05T11:33:11.838Z"
+  "generatedAt": "2026-05-05T11:35:50.066Z"
 }

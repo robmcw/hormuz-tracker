@@ -59,12 +59,7 @@ function readExisting() {
 
 // ─── LinkUp search ────────────────────────────────────────────────────────────
 
-async function fetchIncidentsFromLinkup(apiKey) {
-  const fromDate = isoDateDaysAgo(21);
-  const query = `Strait of Hormuz maritime incidents vessel attacks seizures since ${fromDate} shipping risk`;
-
-  console.log(`→ Querying LinkUp: "${query}"`);
-
+async function linkupQuery(apiKey, query) {
   const res = await fetch(LINKUP_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -85,11 +80,29 @@ async function fetchIncidentsFromLinkup(apiKey) {
   }
 
   const data = await res.json();
+  return data?.output?.incidents ?? data?.incidents ?? [];
+}
 
-  // LinkUp returns { output: { incidents: [...] } } for structured mode
-  const incidents = data?.output?.incidents ?? data?.incidents ?? [];
-  console.log(`→ LinkUp returned ${incidents.length} raw incidents`);
-  return incidents;
+async function fetchIncidentsFromLinkup(apiKey) {
+  const fromDate = isoDateDaysAgo(21);
+
+  // Query 1: specific vessel incidents in the past 21 days
+  const q1 = `Strait of Hormuz maritime incidents vessel attacks seizures since ${fromDate} shipping risk`;
+  // Query 2: aggregate/ongoing statistics — total ships attacked, running tolls, blockade impact
+  const q2 = `Strait of Hormuz total vessels attacked ships 2026 aggregate statistics blockade commercial shipping count`;
+
+  console.log(`→ Querying LinkUp (specific incidents): "${q1}"`);
+  console.log(`→ Querying LinkUp (aggregate statistics): "${q2}"`);
+
+  const [r1, r2] = await Promise.all([
+    linkupQuery(apiKey, q1).catch(err => { console.warn(`  Query 1 failed: ${err.message}`); return []; }),
+    linkupQuery(apiKey, q2).catch(err => { console.warn(`  Query 2 failed: ${err.message}`); return []; }),
+  ]);
+
+  console.log(`→ LinkUp returned ${r1.length} specific + ${r2.length} aggregate incidents`);
+
+  // Merge, deduplication handled by Claude
+  return [...r1, ...r2];
 }
 
 // ─── Claude evaluation ────────────────────────────────────────────────────────
