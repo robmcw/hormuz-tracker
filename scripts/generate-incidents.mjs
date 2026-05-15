@@ -59,12 +59,7 @@ function readExisting() {
 
 // ─── LinkUp search ────────────────────────────────────────────────────────────
 
-async function fetchIncidentsFromLinkup(apiKey) {
-  const fromDate = isoDateDaysAgo(21);
-  const query = `UKMTO ukmto.org recent incidents Strait of Hormuz Persian Gulf Gulf of Oman vessel attacks seizures drone missile since ${fromDate} JMIC EOS Risk maritime advisory`;
-
-  console.log(`→ Querying LinkUp: "${query}"`);
-
+async function runLinkupQuery(apiKey, query) {
   const res = await fetch(LINKUP_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -85,11 +80,42 @@ async function fetchIncidentsFromLinkup(apiKey) {
   }
 
   const data = await res.json();
+  return data?.output?.incidents ?? data?.incidents ?? [];
+}
 
-  // LinkUp returns { output: { incidents: [...] } } for structured mode
-  const incidents = data?.output?.incidents ?? data?.incidents ?? [];
-  console.log(`→ LinkUp returned ${incidents.length} raw incidents`);
-  return incidents;
+async function fetchIncidentsFromLinkup(apiKey) {
+  const fromDate = isoDateDaysAgo(21);
+  const queries = [
+    `UKMTO ukmto.org recent incidents Strait of Hormuz Persian Gulf Gulf of Oman vessel attacks seizures drone missile since ${fromDate} JMIC EOS Risk maritime advisory`,
+    `Strait of Hormuz Persian Gulf vessel named tanker container ship attacked seized hijacked struck damaged since ${fromDate}`,
+    `Iranian IRGC Houthi attack vessel ship tanker bulk carrier Hormuz Arabian Sea Gulf of Oman since ${fromDate} news report`,
+  ];
+
+  const results = await Promise.allSettled(
+    queries.map(async (q) => {
+      console.log(`→ Querying LinkUp: "${q.slice(0, 80)}…"`);
+      const r = await runLinkupQuery(apiKey, q);
+      console.log(`  ↳ ${r.length} incidents`);
+      return r;
+    }),
+  );
+
+  const merged = [];
+  const seen = new Set();
+  for (const r of results) {
+    if (r.status !== 'fulfilled') {
+      console.warn(`  ↳ query failed: ${r.reason?.message ?? r.reason}`);
+      continue;
+    }
+    for (const inc of r.value) {
+      const key = `${inc.date}::${(inc.vessel ?? '').toUpperCase().trim()}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      merged.push(inc);
+    }
+  }
+  console.log(`→ Merged unique incidents: ${merged.length}`);
+  return merged;
 }
 
 // ─── Claude evaluation ────────────────────────────────────────────────────────

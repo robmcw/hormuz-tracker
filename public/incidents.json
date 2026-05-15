@@ -1,59 +1,158 @@
 {
   "incidents": [
     {
-      "date": "2026-05-13",
-      "vessel": "HAJI ALI",
-      "type": "Livestock Carrier",
-      "flag": "India",
-      "event": "Indian-flagged livestock vessel sank off the coast of Oman after being targeted by a suspected drone or missile strike; all Indian crew were rescued by Omani authorities.",
-      "severity": "HIGH",
+      "date": "2026-05-04",
+      "vessel": "HMM NAMU",
+      "type": "CONTAINER SHIP",
+      "flag": "SOUTH KOREA",
+      "event": "The vessel was targeted 36 nautical miles north of Dubai and caught fire following an attack.",
+      "severity": "CRITICAL",
       "simulated": false
     },
     {
       "date": "2026-05-04",
-      "vessel": "IRANIAN MILITARY BOATS",
-      "type": "Military Small Boats",
-      "flag": "Iran",
-      "event": "US military sank Iranian military boats after Iranian forces fired cruise missiles, drones, and small boats at US Navy ships in the Strait of Hormuz; US Navy began escorting commercial ships through the strait.",
+      "vessel": "BARAKAH",
+      "type": "TANKER",
+      "flag": "UAE",
+      "event": "The empty tanker was attacked by two drones launched from Iran while transiting north of Fujairah. The vessel was operated by ADNOC.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "MSC FRANCESCA",
+      "type": "CONTAINER SHIP",
+      "flag": "UNKNOWN",
+      "event": "The vessel was fired on and seized by IRGC gunboats while transiting the Strait of Hormuz. It was subsequently brought to Iran.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
-      "date": "2026-04-24",
-      "vessel": "FLOATING ARMOURY SHIP",
-      "type": "Floating Armoury",
-      "flag": "Unknown",
-      "event": "Iranian forces hijacked a floating armoury ship off the coast of Fujairah, UAE, and diverted it toward Iranian territorial waters; vessel suspected to carry weapons for regional proxies.",
+      "date": "2026-04-22",
+      "vessel": "EPAMINONDAS",
+      "type": "CONTAINER SHIP",
+      "flag": "LIBERIA",
+      "event": "The vessel was fired on and seized by IRGC gunboats while transiting the Strait of Hormuz. It was subsequently brought to Iran.",
       "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "MAYUREE NAREE",
+      "type": "CONTAINER SHIP",
+      "flag": "THAILAND",
+      "event": "The vessel was struck by a projectile while transiting the Strait of Hormuz, causing a fire on board. The IRGC claimed responsibility for the attack.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "EUPHORIA",
+      "type": "GENERAL CARGO",
+      "flag": "UNKNOWN",
+      "event": "The vessel was attacked and damaged by IRGC gunboats while transiting the Strait of Hormuz.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "ONE MAJESTY",
+      "type": "CONTAINER SHIP",
+      "flag": "JAPAN",
+      "event": "The vessel was hit by a projectile off the coast of the United Arab Emirates. Damage was described as limited and the crew remained unharmed.",
+      "severity": "MODERATE",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-22",
+      "vessel": "STAR GWYNETH",
+      "type": "BULK CARRIER",
+      "flag": "MARSHALL ISLANDS",
+      "event": "The vessel was hit by a projectile northwest of Dubai, causing damage to the hull. The crew was reported safe.",
+      "severity": "MODERATE",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-19",
+      "vessel": "UNKNOWN",
+      "type": "TANKER",
+      "flag": "UNKNOWN",
+      "event": "Two IRGC gunboats opened fire on a commercial tanker approximately 23 miles northeast of Oman.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-18",
+      "vessel": "SANMAR HERALD",
+      "type": "OIL TANKER",
+      "flag": "INDIA",
+      "event": "The tanker was approached by two IRGC patrol boats and fired upon, resulting in damage to the bridge windows. The vessel and crew were reported safe.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
+      "date": "2026-04-18",
+      "vessel": "UNKNOWN",
+      "type": "CONTAINER SHIP",
+      "flag": "UNKNOWN",
+      "event": "The vessel was struck by an unknown projectile in the Strait of Hormuz, causing damage to some containers. No fire was reported and the vessel remained operational.",
+      "severity": "MODERATE",
       "simulated": false
     },
     {
       "date": "2026-04-07",
-      "vessel": "BULK CARRIER",
-      "type": "Bulk Carrier",
-      "flag": "Unknown",
-      "event": "Bulk carrier hit by two unidentified projectiles causing fire onboard near the coast of Oman in the Arabian Sea; crew safe and fire extinguished with assistance from Pakistan Navy.",
+      "vessel": "UNKNOWN",
+      "type": "BULK CARRIER",
+      "flag": "UNKNOWN",
+      "event": "The vessel was struck by two unidentified projectiles in the Arabian Sea southeast of Ras Al Hadd, causing a fire on board. The Pakistan Navy assisted in the response.",
       "severity": "HIGH",
       "simulated": false
     },
     {
-      "date": "2026-03-14",
-      "vessel": "TALARA",
-      "type": "Tanker",
-      "flag": "Marshall Islands",
-      "event": "Tanker TALARA seized by suspected Iranian forces 20 nautical miles east of Khor Fakkan, UAE, and directed toward Iranian territorial waters.",
+      "date": "2026-03-18",
+      "vessel": "PARIMAL",
+      "type": "CHEMICAL TANKER",
+      "flag": "PALAU",
+      "event": "The vessel was struck by a projectile east of Khor Fakkan, sparking a fire. Fifteen crew members were evacuated, and the captain was reported missing.",
       "severity": "CRITICAL",
       "simulated": false
     },
     {
+      "date": "2026-03-12",
+      "vessel": "EXPRESS ROME",
+      "type": "CONTAINER SHIP",
+      "flag": "LIBERIA",
+      "event": "The vessel was fired at and stopped by the IRGC after ignoring warnings while transiting the Strait of Hormuz.",
+      "severity": "HIGH",
+      "simulated": false
+    },
+    {
       "date": "2026-03-11",
-      "vessel": "CONTAINER VESSEL",
-      "type": "Container Ship",
-      "flag": "Unknown",
-      "event": "Container vessel hit by an unknown projectile in the Strait of Hormuz, causing fire; crew safe and well; incident under investigation.",
+      "vessel": "MAYUREE NAREE",
+      "type": "BULK CARRIER",
+      "flag": "THAILAND",
+      "event": "The vessel was attacked by Iranian forces in the Strait of Hormuz after allegedly ignoring warnings to obtain transit permission. The crew was rescued by Omani authorities.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-03-04",
+      "vessel": "SAFEEN PRESTIGE",
+      "type": "CONTAINER SHIP",
+      "flag": "MALTA",
+      "event": "The vessel was struck above the waterline while transiting eastbound off the coast of Oman, causing a fire in the engine room. The crew abandoned the ship and were reported safe.",
+      "severity": "CRITICAL",
+      "simulated": false
+    },
+    {
+      "date": "2026-03-04",
+      "vessel": "UNKNOWN",
+      "type": "OIL TANKER",
+      "flag": "UNKNOWN",
+      "event": "A tanker anchored southeast of Mubarak Al-Kabeer port in Kuwait was struck by a sea drone, causing an explosion on the port side and ballast water leakage. The crew remained unharmed.",
       "severity": "HIGH",
       "simulated": false
     }
   ],
-  "generatedAt": "2026-05-15T16:08:16.875Z"
+  "generatedAt": "2026-05-15T16:20:59.601Z"
 }

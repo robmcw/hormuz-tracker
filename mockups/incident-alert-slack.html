@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slack alert mockup · Hormuz Intelligence</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f4f4f5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    .slack-ui {
+      background: #ffffff;
+      width: 740px;
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    /* Channel header */
+    .channel-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+    }
+    .channel-header .hash {
+      font-size: 18px;
+      color: #6b7280;
+      font-weight: 700;
+    }
+    .channel-header .name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .channel-header .topic {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-left: 8px;
+      padding-left: 8px;
+      border-left: 1px solid #e5e7eb;
+    }
+
+    /* Message area */
+    .message-area {
+      padding: 20px 20px 24px;
+    }
+
+    /* Bot message row */
+    .message-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .message-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .message-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .bot-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .bot-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 1px 5px;
+      border-radius: 3px;
+      letter-spacing: 0.02em;
+    }
+    .timestamp {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    /* Plain text */
+    .message-text {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    .message-text strong { font-weight: 700; }
+
+    /* Slack-style attachment */
+    .attachment {
+      border-left: 4px solid #dc2626;
+      background: #f9fafb;
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px;
+      max-width: 520px;
+      border: 1px solid #e5e7eb;
+      border-left: 4px solid #dc2626;
+    }
+
+    .attachment-service {
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+
+    .attachment-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1d4ed8;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    .attachment-title:hover { text-decoration: underline; }
+
+    .attachment-text {
+      font-size: 14px;
+      line-height: 1.55;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .field-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+    .field-value {
+      font-size: 13px;
+      color: #374151;
+    }
+    .field-value.critical { color: #dc2626; font-weight: 700; }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 10px 0;
+    }
+
+    .also-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .secondary-incident {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.5;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 3px;
+      padding: 2px 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-high     { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+    .badge-moderate { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+
+    /* Action buttons */
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .btn {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary  { background: #111827; color: #ffffff; }
+    .btn-secondary { background: #ffffff; color: #374151; border: 1px solid #d1d5db; }
+
+    .attachment-footer {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Reactions */
+    .reactions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .reaction {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+    }
+    .reaction.active { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+  </style>
+</head>
+<body>
+
+<div class="slack-ui">
+
+  <!-- Channel header -->
+  <div class="channel-header">
+    <span class="hash">#</span>
+    <span class="name">hormuz-alerts</span>
+    <span class="topic">Live maritime incident feed · Strait of Hormuz</span>
+  </div>
+
+  <!-- Message area -->
+  <div class="message-area">
+    <div class="message-row">
+
+      <!-- Bot avatar -->
+      <div class="avatar">⚓</div>
+
+      <div class="message-body">
+
+        <!-- Bot name + timestamp -->
+        <div class="message-meta">
+          <span class="bot-name">Hormuz Intelligence</span>
+          <span class="bot-badge">APP</span>
+          <span class="timestamp">Today at 9:14 AM</span>
+        </div>
+
+        <!-- Plain text -->
+        <div class="message-text">
+          🚨 <strong>New CRITICAL incident detected</strong> in the Strait of Hormuz
+        </div>
+
+        <!-- Attachment -->
+        <div class="attachment">
+
+          <div class="attachment-service">Hormuz Intelligence</div>
+          <div class="attachment-title">MSC FRANCESCA · Seized by IRGC Navy</div>
+
+          <div class="attachment-text">
+            Seized by Iran's IRGC Navy in the Strait of Hormuz for allegedly operating without necessary permits and tampering with navigation systems. Vessel fired upon prior to boarding — heavy damage to bridge. Now escorted to Iranian coast. Crew status unknown.
+          </div>
+
+          <div class="fields">
+            <div>
+              <div class="field-label">Severity</div>
+              <div class="field-value critical">CRITICAL</div>
+            </div>
+            <div>
+              <div class="field-label">Vessel type</div>
+              <div class="field-value">Container Ship</div>
+            </div>
+            <div>
+              <div class="field-label">Flag</div>
+              <div class="field-value">Panama</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="also-label">Also in this update</div>
+
+          <div class="secondary-incident">
+            <span class="badge badge-high">HIGH</span>
+            <span><strong>EPAMINONDAS</strong> — Seized by IRGC, directed to Iranian coast alongside MSC Francesca.</span>
+          </div>
+          <div class="secondary-incident">
+            <span class="badge badge-moderate">MOD</span>
+            <span><strong>EUPHORIA</strong> — Fired upon by IRGC, escaped damage, continued toward Gulf of Oman.</span>
+          </div>
+
+          <div class="actions">
+            <a href="#" class="btn btn-primary">View incident log →</a>
+            <a href="#" class="btn btn-secondary">Live dashboard</a>
+          </div>
+
+          <div class="attachment-footer">
+            <span>Sources: LinkUp · Evaluated by Claude · Not investment advice</span>
+            <span>22 Apr 2026</span>
+          </div>
+
+        </div>
+
+        <!-- Reactions -->
+        <div class="reactions">
+          <div class="reaction active">👁️ 4</div>
+          <div class="reaction">⚠️ 2</div>
+          <div class="reaction">+ Add reaction</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
