@@ -14,8 +14,6 @@ function loadIncidents() {
   }
 }
 
-const INCIDENTS = loadIncidents();
-
 // Seeded pseudo-RNG — consistent within each hour, shifts each hour
 function hourRng(slot: number): number {
   const seed = Math.floor(Date.now() / 3_600_000) * 100 + slot;
@@ -184,7 +182,7 @@ export async function GET() {
     riskLevel: 'CRITICAL',
     riskPhrase: 'Effective Closure',
     signals: SIGNALS,
-    incidents: INCIDENTS,
+    incidents: loadIncidents(),
     pipelines: PIPELINES,
     carriers: CARRIERS,
     transitHistory: TRANSIT_HISTORY,

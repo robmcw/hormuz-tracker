@@ -189,7 +189,9 @@ export default function IncidentLog({ incidents }: Props) {
                       className="font-mono"
                       style={{ fontSize: 'var(--text-label)', color: 'var(--faint)' }}
                     >
-                      {relativeDate(inc.date)} · {inc.date}
+                      {relativeDate(inc.date) === inc.date
+                        ? inc.date
+                        : `${relativeDate(inc.date)} · ${inc.date}`}
                     </span>
                   </div>
                   <div

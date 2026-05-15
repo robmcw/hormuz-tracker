@@ -61,7 +61,7 @@ function readExisting() {
 
 async function fetchIncidentsFromLinkup(apiKey) {
   const fromDate = isoDateDaysAgo(21);
-  const query = `Strait of Hormuz maritime incidents vessel attacks seizures since ${fromDate} shipping risk`;
+  const query = `UKMTO ukmto.org recent incidents Strait of Hormuz Persian Gulf Gulf of Oman vessel attacks seizures drone missile since ${fromDate} JMIC EOS Risk maritime advisory`;
 
   console.log(`→ Querying LinkUp: "${query}"`);
 
@@ -108,7 +108,7 @@ async function evaluateWithClaude(client, rawIncidents) {
 4. Set simulated=false for all (these are real incidents).
 5. Return only the cleaned, de-duplicated list, ordered by date descending (most recent first).
 6. Keep vessel names in UPPERCASE.
-7. Cap the list at 10 incidents.
+7. Prefer the most recent incidents. Cap the list at 20 incidents.
 
 Raw incidents from web search:
 ${JSON.stringify(rawIncidents, null, 2)}
@@ -118,7 +118,7 @@ Return ONLY a JSON array of validated incidents. Each item must have: date (YYYY
   console.log('→ Evaluating incidents via Claude…');
   const message = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 2000,
+    max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }],
   });
 
